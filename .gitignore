@@ -1,0 +1,7 @@
+project2-statement.txt
+Project2/project2-statement.txt
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env
+*.log
