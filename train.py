@@ -126,7 +126,7 @@ def main():
     ap.add_argument("--batch_size", type=int, default=4)
     ap.add_argument("--grad_accum", type=int, default=4)
     ap.add_argument("--max_seq_len", type=int, default=2048)
-    ap.add_argument("--num_chunks", type=int, default=4)
+    ap.add_argument("--num_chunks", type=int, default=1)
     args = ap.parse_args()
 
     os.makedirs(EXPERIMENTS_PATH, exist_ok=True)
