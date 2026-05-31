@@ -105,10 +105,6 @@ def build_config_group(args):
                         "trust_remote_code": True,
                     },
                     formatting_func=formatting_func,
-                    generation_config={
-                        "max_new_tokens": 512,
-                        "do_sample": False,
-                    },
                 )
             )
 
