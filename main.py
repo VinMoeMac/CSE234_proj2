@@ -94,7 +94,7 @@ def run_batch(model, tokenizer, prompts: list[str]) -> list[str]:
     return results
 
 
-def predict_all(questions: list[dict], schemas_dir: str, model, tokenizer, batch_size: int = BATCH_SIZE) -> list[dict]:
+def predict_all(questions: list[dict], schemas_dir: str, model, tokenizer, batch_size: int = BATCH_SIZE, filter_schema: bool = False) -> list[dict]:
     preds = []
     for i in range(0, len(questions), batch_size):
         batch = questions[i: i + batch_size]
@@ -103,7 +103,7 @@ def predict_all(questions: list[dict], schemas_dir: str, model, tokenizer, batch
         for q in batch:
             schema = load_schema(q["db_id"], schemas_dir)
             schemas.append(schema)
-            schema_text = serialize_schema(schema)
+            schema_text = serialize_schema(schema, filter_question=q["question"] if filter_schema else None)
             prompts.append(format_prompt(q["question"], q["db_id"], schema_text))
 
         raw_outputs = run_batch(model, tokenizer, prompts)
@@ -130,6 +130,8 @@ def main():
     ap.add_argument("--schemas_dir", default=DEFAULT_SCHEMAS_DIR)
     ap.add_argument("--adapter_path", default=ADAPTER_PATH)
     ap.add_argument("--batch_size", type=int, default=BATCH_SIZE)
+    ap.add_argument("--filter_schema", action="store_true",
+                    help="Only serialize tables matching question tokens (use on low VRAM)")
     args = ap.parse_args()
 
     with open(args.input, "r", encoding="utf-8") as f:
@@ -139,7 +141,7 @@ def main():
     model, tokenizer = load_model(args.adapter_path)
 
     print(f"Running inference on {len(questions)} questions...")
-    preds = predict_all(questions, args.schemas_dir, model, tokenizer, batch_size=args.batch_size)
+    preds = predict_all(questions, args.schemas_dir, model, tokenizer, batch_size=args.batch_size, filter_schema=args.filter_schema)
 
     with open(args.output, "w", encoding="utf-8") as f:
         json.dump(preds, f, indent=2, ensure_ascii=False)

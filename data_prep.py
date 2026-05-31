@@ -25,12 +25,51 @@ def load_schema(db_id: str, schemas_dir: str) -> dict:
         return json.load(f)
 
 
-def serialize_schema(schema: dict) -> str:
+def filter_tables(schema: dict, question: str) -> list[str]:
+    """Return table names that have at least one token matching the question (case-insensitive).
+    Always keeps tables with PK/FK relationships to retained tables to preserve join paths."""
+    tables = schema["table_names_original"]
+    q_tokens = set(re.sub(r"[^a-z0-9]", " ", question.lower()).split())
+
+    fk_pairs = schema["foreign_keys"]  # [[col_idx, col_idx], ...]
+    columns = schema["column_names_original"]
+
+    # map col index -> table index
+    col_to_table = {i: tbl_idx for i, (tbl_idx, _) in enumerate(columns) if tbl_idx != -1}
+
+    # find tables with a keyword match
+    matched = set()
+    for t in tables:
+        t_tokens = set(re.sub(r"[^a-z0-9]", " ", t.lower()).split())
+        if t_tokens & q_tokens:
+            matched.add(t)
+
+    # expand: keep tables connected via FK to any matched table
+    changed = True
+    while changed:
+        changed = False
+        for col_a, col_b in fk_pairs:
+            ta = tables[col_to_table[col_a]] if col_a in col_to_table else None
+            tb = tables[col_to_table[col_b]] if col_b in col_to_table else None
+            if ta in matched and tb not in matched:
+                matched.add(tb)
+                changed = True
+            elif tb in matched and ta not in matched:
+                matched.add(ta)
+                changed = True
+
+    # fall back to all tables if nothing matched
+    return list(matched) if matched else tables
+
+
+def serialize_schema(schema: dict, filter_question: str | None = None) -> str:
     tables = schema["table_names_original"]
     columns = schema["column_names_original"]  # [table_idx, col_name], index 0 is [-1, '*']
     types = schema["column_types"]
     pks = set(schema["primary_keys"])
     fk_cols = {fk[0] for fk in schema["foreign_keys"]}
+
+    allowed_tables = set(filter_tables(schema, filter_question)) if filter_question else set(tables)
 
     # group columns by table (skip index 0 which is the synthetic wildcard)
     table_cols = {t: [] for t in tables}
@@ -48,6 +87,8 @@ def serialize_schema(schema: dict) -> str:
 
     lines = []
     for table, cols in table_cols.items():
+        if table not in allowed_tables:
+            continue
         lines.append(f"Table: {table}")
         for col in cols:
             lines.append(f"  - {col}")
@@ -72,14 +113,15 @@ def make_chat_example(question: str, db_id: str, schema_text: str, schema_links:
     }
 
 
-def build_dataset(data_path: str, schemas_dir: str) -> list[dict]:
+def build_dataset(data_path: str, schemas_dir: str, filter_schema: bool = False) -> list[dict]:
     with open(data_path, "r", encoding="utf-8") as f:
         examples = json.load(f)
 
     dataset = []
     for ex in examples:
         schema = load_schema(ex["db_id"], schemas_dir)
-        schema_text = serialize_schema(schema)
+        question = ex["question"] if filter_schema else None
+        schema_text = serialize_schema(schema, filter_question=question)
         chat = make_chat_example(
             question=ex["question"],
             db_id=ex["db_id"],
@@ -104,16 +146,18 @@ if __name__ == "__main__":
     parser.add_argument("--validation", default="Project2/validation.json")
     parser.add_argument("--schemas_dir", default="Project2/schemas")
     parser.add_argument("--out_dir", default="data")
+    parser.add_argument("--filter_schema", action="store_true",
+                        help="Only include tables with tokens matching the question (use on low VRAM)")
     args = parser.parse_args()
 
     os.makedirs(args.out_dir, exist_ok=True)
 
     print("Building training set...")
-    train_data = build_dataset(args.train, args.schemas_dir)
+    train_data = build_dataset(args.train, args.schemas_dir, filter_schema=args.filter_schema)
     save_jsonl(train_data, os.path.join(args.out_dir, "train.jsonl"))
     print(f"  {len(train_data)} examples -> {args.out_dir}/train.jsonl")
 
     print("Building validation set...")
-    val_data = build_dataset(args.validation, args.schemas_dir)
+    val_data = build_dataset(args.validation, args.schemas_dir, filter_schema=args.filter_schema)
     save_jsonl(val_data, os.path.join(args.out_dir, "validation.jsonl"))
     print(f"  {len(val_data)} examples -> {args.out_dir}/validation.jsonl")
