@@ -38,7 +38,7 @@ def main():
 
     model = AutoModelForCausalLM.from_pretrained(
         args.model,
-        torch_dtype=torch.float16,
+        dtype=torch.bfloat16,
         device_map="auto",
         trust_remote_code=True,
         use_cache=False,
@@ -76,6 +76,7 @@ def main():
         bf16=torch.cuda.is_bf16_supported(),
         fp16=not torch.cuda.is_bf16_supported(),
         max_length=args.max_seq_len,
+        gradient_checkpointing=True,
         report_to="none",
     )
 
