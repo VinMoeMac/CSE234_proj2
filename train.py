@@ -93,13 +93,14 @@ def build_config_group(args):
                         eval_strategy="epoch",
                         save_strategy="epoch",
                         bf16=True,
-                        max_seq_length=args.max_seq_len,
+                        max_length=args.max_seq_len,
+                        gradient_checkpointing=True,
                         output_dir=args.output_dir,
                     ),
                     model_type="causal_lm",
                     model_kwargs={
                         "device_map": "auto",
-                        "torch_dtype": "auto",
+                        "dtype": "auto",
                         "use_cache": False,
                         "trust_remote_code": True,
                     },
@@ -146,7 +147,7 @@ def main():
     experiment = Experiment(
         experiment_name=args.experiment_name,
         mode="fit",
-        experiments_path=EXPERIMENTS_PATH,
+        experiment_path=EXPERIMENTS_PATH,
     )
 
     config_group = build_config_group(args)
