@@ -216,8 +216,6 @@ def predict_all(
             links = validate_links(links, schema)
             if not links:
                 links = keyword_fallback(q["question"], schema)
-            else:
-                links = augment_columns(q["question"], links, schema)
             preds.append({"question_id": q["question_id"], "schema_links": links})
 
         done = min(i + batch_size, total)
