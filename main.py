@@ -100,12 +100,12 @@ def run_batch(model, tokenizer, prompts: list[str], max_seq_len: int = 3072) -> 
         tokenize=False,
         add_generation_prompt=True,
     )
+    tokenizer.truncation_side = "left"
     inputs = tokenizer(
         encoded,
         return_tensors="pt",
         padding=True,
         truncation=True,
-        truncation_side="left",
         max_length=max_seq_len,
     ).to(model.device)
 
