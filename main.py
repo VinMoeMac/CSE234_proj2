@@ -91,7 +91,6 @@ def validate_links(links: dict, schema: dict) -> dict:
 
 
 def keyword_fallback(question: str, schema: dict) -> dict:
-    import re
     tables = schema["table_names_original"]
     columns = schema["column_names_original"]
     q_tokens = set(re.sub(r"[^a-z0-9]", " ", question.lower()).split())
@@ -102,14 +101,14 @@ def keyword_fallback(question: str, schema: dict) -> dict:
         t_tokens = set(re.sub(r"[^a-z0-9]", " ", t.lower()).split())
         scores[t] = len(t_tokens & q_tokens)
 
-    # pick top scoring table(s) with score > 0, else top 1
     best_score = max(scores.values())
     if best_score > 0:
         matched = [t for t, s in scores.items() if s == best_score]
     else:
-        matched = [max(scores, key=scores.get)]
+        # no match — return top 2 by score to improve recall
+        sorted_tables = sorted(scores, key=scores.get, reverse=True)
+        matched = sorted_tables[:2]
 
-    # for each matched table find columns that match question tokens
     table_to_cols = {}
     for tbl_idx, col_name in columns:
         if tbl_idx == -1:
@@ -124,6 +123,30 @@ def keyword_fallback(question: str, schema: dict) -> dict:
             if set(re.sub(r"[^a-z0-9]", " ", c.lower()).split()) & q_tokens
         ]
         result[t] = col_matches
+    return result
+
+
+def augment_columns(question: str, links: dict, schema: dict) -> dict:
+    """For tables the model predicted, add keyword-matched columns it may have missed."""
+    columns = schema["column_names_original"]
+    tables = schema["table_names_original"]
+    q_tokens = set(re.sub(r"[^a-z0-9]", " ", question.lower()).split())
+
+    table_to_cols = {}
+    for tbl_idx, col_name in columns:
+        if tbl_idx == -1:
+            continue
+        t = tables[tbl_idx]
+        table_to_cols.setdefault(t.lower(), []).append(col_name)
+
+    result = {}
+    for table, pred_cols in links.items():
+        extra = [
+            c for c in table_to_cols.get(table.lower(), [])
+            if set(re.sub(r"[^a-z0-9]", " ", c.lower()).split()) & q_tokens
+            and c not in pred_cols
+        ]
+        result[table] = pred_cols + extra
     return result
 
 
@@ -193,6 +216,8 @@ def predict_all(
             links = validate_links(links, schema)
             if not links:
                 links = keyword_fallback(q["question"], schema)
+            else:
+                links = augment_columns(q["question"], links, schema)
             preds.append({"question_id": q["question_id"], "schema_links": links})
 
         done = min(i + batch_size, total)
