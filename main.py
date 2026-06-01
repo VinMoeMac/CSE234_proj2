@@ -27,6 +27,7 @@ def load_model(adapter_path: str):
         trust_remote_code=True,
     )
     model = PeftModel.from_pretrained(base, adapter_path)
+    model = model.to(torch.bfloat16)
     model.eval()
     return model, tokenizer
 
