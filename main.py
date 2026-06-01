@@ -105,6 +105,7 @@ def run_batch(model, tokenizer, prompts: list[str], max_seq_len: int = 3072) -> 
         return_tensors="pt",
         padding=True,
         truncation=True,
+        truncation_side="left",
         max_length=max_seq_len,
     ).to(model.device)
 
