@@ -90,6 +90,43 @@ def validate_links(links: dict, schema: dict) -> dict:
     return validated
 
 
+def keyword_fallback(question: str, schema: dict) -> dict:
+    import re
+    tables = schema["table_names_original"]
+    columns = schema["column_names_original"]
+    q_tokens = set(re.sub(r"[^a-z0-9]", " ", question.lower()).split())
+
+    # score each table by token overlap with question
+    scores = {}
+    for t in tables:
+        t_tokens = set(re.sub(r"[^a-z0-9]", " ", t.lower()).split())
+        scores[t] = len(t_tokens & q_tokens)
+
+    # pick top scoring table(s) with score > 0, else top 1
+    best_score = max(scores.values())
+    if best_score > 0:
+        matched = [t for t, s in scores.items() if s == best_score]
+    else:
+        matched = [max(scores, key=scores.get)]
+
+    # for each matched table find columns that match question tokens
+    table_to_cols = {}
+    for tbl_idx, col_name in columns:
+        if tbl_idx == -1:
+            continue
+        t = tables[tbl_idx]
+        table_to_cols.setdefault(t, []).append(col_name)
+
+    result = {}
+    for t in matched:
+        col_matches = [
+            c for c in table_to_cols.get(t, [])
+            if set(re.sub(r"[^a-z0-9]", " ", c.lower()).split()) & q_tokens
+        ]
+        result[t] = col_matches
+    return result
+
+
 def run_batch(model, tokenizer, prompts: list[str], max_seq_len: int = 3072) -> list[str]:
     chats = [
         [{"role": "system", "content": SYSTEM_PROMPT}, {"role": "user", "content": p}]
@@ -154,6 +191,8 @@ def predict_all(
         for q, schema, raw in zip(batch, schemas, raw_outputs):
             links = extract_json(raw) or {}
             links = validate_links(links, schema)
+            if not links:
+                links = keyword_fallback(q["question"], schema)
             preds.append({"question_id": q["question_id"], "schema_links": links})
 
         done = min(i + batch_size, total)
