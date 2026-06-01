@@ -55,8 +55,14 @@ def main():
     ap.add_argument("--max_seq_len", type=int, default=1024)
     ap.add_argument("--lora_r", type=int, default=16)
     ap.add_argument("--filter_schema", action="store_true")
-    ap.add_argument("--oversample_factor", type=int, default=4,
-                    help="How many times to repeat underrepresented DB examples")
+    ap.add_argument("--oversample_factor", type=int, default=1,
+                    help="How many times to repeat underrepresented DB examples (1=no oversampling)")
+    ap.add_argument("--use_table_desc", action="store_true",
+                    help="Approach 1: add table usage hints derived from training data")
+    ap.add_argument("--show_fk_links", action="store_true",
+                    help="Approach 2: show FK relationships between tables")
+    ap.add_argument("--sort_by_question", action="store_true",
+                    help="Approach 3: sort columns by relevance to question")
     args = ap.parse_args()
 
     os.makedirs(args.output_dir, exist_ok=True)
@@ -83,8 +89,26 @@ def main():
     )
 
     print("Building datasets...")
-    train_data = build_dataset(args.train, args.schemas_dir, filter_schema=args.filter_schema)
-    val_data = build_dataset(args.validation, args.schemas_dir, filter_schema=args.filter_schema)
+    table_descriptions = None
+    if args.use_table_desc:
+        from data_prep import build_table_descriptions
+        table_descriptions = build_table_descriptions(args.train)
+        print(f"  Built table descriptions for {sum(len(v) for v in table_descriptions.values())} tables")
+
+    train_data = build_dataset(
+        args.train, args.schemas_dir,
+        filter_schema=args.filter_schema,
+        table_descriptions=table_descriptions,
+        sort_by_question=args.sort_by_question,
+        show_fk_links=args.show_fk_links,
+    )
+    val_data = build_dataset(
+        args.validation, args.schemas_dir,
+        filter_schema=args.filter_schema,
+        table_descriptions=table_descriptions,
+        sort_by_question=args.sort_by_question,
+        show_fk_links=args.show_fk_links,
+    )
 
     if args.oversample_factor > 1:
         train_data = oversample(train_data, args.train, factor=args.oversample_factor)
@@ -149,6 +173,9 @@ def main():
             "lora_r": args.lora_r,
             "oversample_factor": args.oversample_factor,
             "filter_schema": args.filter_schema,
+            "use_table_desc": args.use_table_desc,
+            "show_fk_links": args.show_fk_links,
+            "sort_by_question": args.sort_by_question,
             "effective_batch_size": args.batch_size * args.grad_accum,
             "train_examples": len(train_dataset),
             "val_examples": len(val_dataset),

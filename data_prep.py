@@ -67,17 +67,60 @@ def filter_tables(schema: dict, question: str) -> list[str]:
     return list(matched) if matched else tables
 
 
-def serialize_schema(schema: dict, filter_question: str | None = None) -> str:
+def build_table_descriptions(train_path: str) -> dict[str, list[str]]:
+    """Approach 1: derive table usage descriptions from training questions.
+    Returns {db_id: {table: [question snippets that reference it]}}"""
+    with open(train_path, "r", encoding="utf-8") as f:
+        examples = json.load(f)
+    desc: dict[str, dict[str, list[str]]] = {}
+    for ex in examples:
+        db = ex["db_id"]
+        if db not in desc:
+            desc[db] = {}
+        for table in ex["schema_links"]:
+            if table not in desc[db]:
+                desc[db][table] = []
+            # extract key noun phrases (words >3 chars, not stopwords)
+            words = [w for w in re.findall(r"[a-zA-Z]{4,}", ex["question"])
+                     if w.lower() not in {"that", "where", "which", "have", "from", "with",
+                                          "what", "show", "list", "find", "give", "each",
+                                          "this", "there", "were", "been", "when", "then"}]
+            if words:
+                desc[db][table].extend(words[:4])
+    # deduplicate and limit
+    result = {}
+    for db, tables in desc.items():
+        result[db] = {t: list(dict.fromkeys(words))[:8] for t, words in tables.items()}
+    return result
+
+
+def serialize_schema(
+    schema: dict,
+    filter_question: str | None = None,
+    table_descriptions: dict | None = None,
+    sort_by_question: bool = False,
+    show_fk_links: bool = False,
+) -> str:
+    """Serialize schema with optional enhancements.
+
+    Args:
+        filter_question: if set, only include tables matching question tokens
+        table_descriptions: Approach 1 — dict of {table: [keywords]} to prepend as table hints
+        sort_by_question: Approach 3 — sort columns by relevance to question
+        show_fk_links: Approach 2 — add FK relationship lines between tables
+    """
     tables = schema["table_names_original"]
     columns = schema["column_names_original"]  # [table_idx, col_name], index 0 is [-1, '*']
     types = schema["column_types"]
     pks = set(schema["primary_keys"])
-    fk_cols = {fk[0] for fk in schema["foreign_keys"]}
+    fk_pairs = schema["foreign_keys"]
+    fk_cols = {fk[0] for fk in fk_pairs}
 
     allowed_tables = set(filter_tables(schema, filter_question)) if filter_question else set(tables)
 
-    # group columns by table (skip index 0 which is the synthetic wildcard)
-    table_cols = {t: [] for t in tables}
+    # group columns by table
+    table_cols: dict[str, list[str]] = {t: [] for t in tables}
+    table_col_names: dict[str, list[str]] = {t: [] for t in tables}
     for i, (tbl_idx, col_name) in enumerate(columns):
         if tbl_idx == -1:
             continue
@@ -86,15 +129,52 @@ def serialize_schema(schema: dict, filter_question: str | None = None) -> str:
             annotation.append("PK")
         if i in fk_cols:
             annotation.append("FK")
-        col_type = types[i - 1]  # types has no entry for the synthetic [-1,'*'] at index 0
+        col_type = types[i - 1]
         suffix = f" [{col_type}{',' + ','.join(annotation) if annotation else ''}]"
         table_cols[tables[tbl_idx]].append(f"{col_name}{suffix}")
+        table_col_names[tables[tbl_idx]].append(col_name)
+
+    # Approach 3: sort columns by relevance to question
+    if sort_by_question and filter_question:
+        q_tokens = set(re.sub(r"[^a-z0-9]", " ", filter_question.lower()).split())
+        for t in tables:
+            pairs = list(zip(table_cols[t], table_col_names[t]))
+            pairs.sort(key=lambda x: -len(
+                set(re.sub(r"[^a-z0-9]", " ", x[1].lower()).split()) & q_tokens
+            ))
+            table_cols[t] = [p[0] for p in pairs]
+
+    # Approach 2: build FK link map (table -> list of linked tables, deduplicated)
+    fk_links: dict[str, list[str]] = {t: [] for t in tables}
+    if show_fk_links:
+        col_to_table = {i: tables[tbl_idx]
+                        for i, (tbl_idx, _) in enumerate(columns) if tbl_idx != -1}
+        seen_links: set[tuple] = set()
+        for col_a, col_b in fk_pairs:
+            ta = col_to_table.get(col_a)
+            tb = col_to_table.get(col_b)
+            if ta and tb and ta != tb:
+                if (ta, tb) not in seen_links:
+                    fk_links[ta].append(tb)
+                    seen_links.add((ta, tb))
+                if (tb, ta) not in seen_links:
+                    fk_links[tb].append(ta)
+                    seen_links.add((tb, ta))
 
     lines = []
     for table, cols in table_cols.items():
         if table not in allowed_tables:
             continue
-        lines.append(f"Table: {table}")
+        # Approach 1: prepend table description hint
+        hint = ""
+        if table_descriptions and table in table_descriptions:
+            keywords = table_descriptions[table]
+            if keywords:
+                hint = f"  [used for: {', '.join(keywords)}]"
+        lines.append(f"Table: {table}{hint}")
+        # Approach 2: show FK links
+        if show_fk_links and fk_links[table]:
+            lines.append(f"  [linked to: {', '.join(fk_links[table])}]")
         for col in cols:
             lines.append(f"  - {col}")
     return "\n".join(lines)
@@ -118,15 +198,29 @@ def make_chat_example(question: str, db_id: str, schema_text: str, schema_links:
     }
 
 
-def build_dataset(data_path: str, schemas_dir: str, filter_schema: bool = False) -> list[dict]:
+def build_dataset(
+    data_path: str,
+    schemas_dir: str,
+    filter_schema: bool = False,
+    table_descriptions: dict | None = None,
+    sort_by_question: bool = False,
+    show_fk_links: bool = False,
+) -> list[dict]:
     with open(data_path, "r", encoding="utf-8") as f:
         examples = json.load(f)
 
     dataset = []
     for ex in examples:
         schema = load_schema(ex["db_id"], schemas_dir)
-        question = ex["question"] if filter_schema else None
-        schema_text = serialize_schema(schema, filter_question=question)
+        question = ex["question"] if (filter_schema or sort_by_question) else None
+        db_desc = table_descriptions.get(ex["db_id"]) if table_descriptions else None
+        schema_text = serialize_schema(
+            schema,
+            filter_question=question,
+            table_descriptions=db_desc,
+            sort_by_question=sort_by_question,
+            show_fk_links=show_fk_links,
+        )
         chat = make_chat_example(
             question=ex["question"],
             db_id=ex["db_id"],
