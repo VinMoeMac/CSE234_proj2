@@ -41,6 +41,10 @@ LORA_CONFIGS = List([
 
 LEARNING_RATES = [2e-4, 5e-5]
 
+# Note: with 301 examples and num_chunks=4 each chunk has ~75 examples.
+# num_train_epochs applies per-chunk, so total data seen = chunks * epochs * chunk_size.
+# We set epochs high enough that each config sees the full dataset multiple times.
+
 
 # ---------------------------------------------------------------------------
 # Data formatting for RapidFire AI
@@ -126,7 +130,7 @@ def main():
     ap.add_argument("--batch_size", type=int, default=4)
     ap.add_argument("--grad_accum", type=int, default=4)
     ap.add_argument("--max_seq_len", type=int, default=2048)
-    ap.add_argument("--num_chunks", type=int, default=1)
+    ap.add_argument("--num_chunks", type=int, default=4)
     args = ap.parse_args()
 
     os.makedirs(EXPERIMENTS_PATH, exist_ok=True)
