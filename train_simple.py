@@ -3,7 +3,9 @@ Baseline training script — plain TRL SFTTrainer, no RapidFire dependency.
 Use this for local dev/testing. For the real multi-config runs use train.py on DSMLP.
 """
 import argparse
+import json
 import os
+import time
 
 import torch
 from datasets import Dataset
@@ -122,12 +124,47 @@ def main():
     )
 
     print("Training...")
-    trainer.train()
+    start_time = time.time()
+    train_result = trainer.train()
+    elapsed = time.time() - start_time
 
     adapter_path = os.path.join(args.output_dir, "adapter")
     trainer.model.save_pretrained(adapter_path)
     tokenizer.save_pretrained(adapter_path)
     print(f"Adapter saved to {adapter_path}")
+
+    # Save experiment log to logs/
+    log_dir = os.path.join("logs", os.path.basename(args.output_dir))
+    os.makedirs(log_dir, exist_ok=True)
+
+    log = {
+        "experiment": os.path.basename(args.output_dir),
+        "config": {
+            "model": args.model,
+            "epochs": args.epochs,
+            "batch_size": args.batch_size,
+            "grad_accum": args.grad_accum,
+            "lr": args.lr,
+            "max_seq_len": args.max_seq_len,
+            "lora_r": args.lora_r,
+            "oversample_factor": args.oversample_factor,
+            "filter_schema": args.filter_schema,
+            "effective_batch_size": args.batch_size * args.grad_accum,
+            "train_examples": len(train_dataset),
+            "val_examples": len(val_dataset),
+        },
+        "results": {
+            "train_loss": train_result.training_loss,
+            "train_runtime_seconds": elapsed,
+            "train_steps": train_result.global_step,
+        },
+        "trainer_state": trainer.state.log_history,
+    }
+
+    log_path = os.path.join(log_dir, "training_log.json")
+    with open(log_path, "w") as f:
+        json.dump(log, f, indent=2)
+    print(f"Log saved to {log_path}")
     print("Done. Copy adapter/ to repo root before running main.py")
 
 
