@@ -11,7 +11,32 @@ from peft import LoraConfig
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from trl import SFTConfig, SFTTrainer
 
+import json
+
 from data_prep import build_dataset
+
+# Databases that score poorly — oversample these
+UNDERSAMPLE_DBS = {
+    "NTSB",
+    "SBODemoUS-Reports", "SBODemoUS-General", "SBODemoUS-Finance",
+    "SBODemoUS-Service", "SBODemoUS-Human Resources", "SBODemoUS-Business Partners",
+    "SBODemoUS-Inventory and Production", "SBODemoUS-Banking", "SBODemoUS-Sales Opportunities",
+}
+
+
+def oversample(data: list[dict], train_json: str, factor: int = 4) -> list[dict]:
+    """Repeat examples from underrepresented databases by factor."""
+    with open(train_json) as f:
+        raw = json.load(f)
+    db_by_qid = {ex["question_id"]: ex["db_id"] for ex in raw}
+
+    # data_prep returns messages dicts without db_id — re-attach from raw
+    paired = list(zip(raw, data))  # assumes same order, same length
+    result = list(data)
+    for ex_raw, ex_data in paired:
+        if ex_raw["db_id"] in UNDERSAMPLE_DBS:
+            result.extend([ex_data] * (factor - 1))
+    return result
 
 
 def main():
@@ -28,6 +53,8 @@ def main():
     ap.add_argument("--max_seq_len", type=int, default=1024)
     ap.add_argument("--lora_r", type=int, default=16)
     ap.add_argument("--filter_schema", action="store_true")
+    ap.add_argument("--oversample_factor", type=int, default=4,
+                    help="How many times to repeat underrepresented DB examples")
     args = ap.parse_args()
 
     os.makedirs(args.output_dir, exist_ok=True)
@@ -56,6 +83,11 @@ def main():
     print("Building datasets...")
     train_data = build_dataset(args.train, args.schemas_dir, filter_schema=args.filter_schema)
     val_data = build_dataset(args.validation, args.schemas_dir, filter_schema=args.filter_schema)
+
+    if args.oversample_factor > 1:
+        train_data = oversample(train_data, args.train, factor=args.oversample_factor)
+        print(f"  Oversampled underrepresented DBs by {args.oversample_factor}x")
+
     train_dataset = Dataset.from_list(train_data)
     val_dataset = Dataset.from_list(val_data)
     print(f"  train: {len(train_dataset)}, val: {len(val_dataset)}")

@@ -11,10 +11,15 @@ DB_ID_TO_FILENAME = {
 }
 
 SYSTEM_PROMPT = (
-    "You are a schema linking assistant. Given a natural language question and a "
-    "database schema, output a JSON object mapping each referenced table name to a "
-    "list of referenced column names. Use an empty list for tables referenced without "
-    "specific columns (e.g. COUNT(*)). Output only valid JSON — no explanation."
+    "You are a schema linking assistant. Given a natural language question and a database schema, "
+    "identify which tables and columns the underlying SQL query would reference.\n\n"
+    "Rules:\n"
+    "- Output a JSON object mapping each referenced table name to a list of referenced column names.\n"
+    "- Use the exact table and column names from the schema (case matters for readability).\n"
+    "- Include a table with an empty list [] if it is referenced but no specific columns are needed (e.g. COUNT(*), SELECT *).\n"
+    "- Include columns used in WHERE, GROUP BY, ORDER BY, JOIN ON, and SELECT clauses.\n"
+    "- Do NOT include tables or columns not present in the schema.\n"
+    "- Output only valid JSON — no explanation, no markdown, no extra text."
 )
 
 
