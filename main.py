@@ -94,10 +94,13 @@ def run_batch(model, tokenizer, prompts: list[str], max_seq_len: int = 3072) -> 
         [{"role": "system", "content": SYSTEM_PROMPT}, {"role": "user", "content": p}]
         for p in prompts
     ]
-    inputs = tokenizer.apply_chat_template(
+    encoded = tokenizer.apply_chat_template(
         chats,
-        tokenize=True,
+        tokenize=False,
         add_generation_prompt=True,
+    )
+    inputs = tokenizer(
+        encoded,
         return_tensors="pt",
         padding=True,
         truncation=True,
@@ -106,15 +109,16 @@ def run_batch(model, tokenizer, prompts: list[str], max_seq_len: int = 3072) -> 
 
     with torch.no_grad():
         outputs = model.generate(
-            inputs,
+            input_ids=inputs["input_ids"],
+            attention_mask=inputs["attention_mask"],
             max_new_tokens=MAX_NEW_TOKENS,
             do_sample=False,
             pad_token_id=tokenizer.eos_token_id,
         )
 
     results = []
-    for out in outputs:
-        generated = out[inputs.shape[1]:]
+    for i, out in enumerate(outputs):
+        generated = out[inputs["input_ids"].shape[1]:]
         results.append(tokenizer.decode(generated, skip_special_tokens=True))
     return results
 
