@@ -150,17 +150,45 @@ def augment_columns(question: str, links: dict, schema: dict) -> dict:
     return result
 
 
+def truncate_schema_text(schema_text: str, question: str, tokenizer, max_schema_tokens: int) -> str:
+    """Truncate schema lines from the bottom, keeping the most relevant tables at top."""
+    lines = schema_text.split("\n")
+    # keep removing lines from the end until it fits
+    while lines:
+        candidate = "\n".join(lines)
+        tokens = tokenizer(candidate, return_tensors="pt")["input_ids"].shape[1]
+        if tokens <= max_schema_tokens:
+            return candidate
+        # remove last line
+        lines = lines[:-1]
+    return ""
+
+
 def run_batch(model, tokenizer, prompts: list[str], max_seq_len: int = 3072) -> list[str]:
+    # Reserve tokens: system prompt (~200) + question (~100) + generation (~512) + overhead (~200)
+    max_schema_tokens = max_seq_len - 512 - 200
+
+    # Truncate schema portion of each prompt to protect system prompt and question
+    truncated_prompts = []
+    for p in prompts:
+        # prompt format: "Database: X\nSchema:\n<schema>\n\nQuestion: Y"
+        if "\n\nQuestion:" in p:
+            schema_part, question_part = p.split("\n\nQuestion:", 1)
+            if "\nSchema:\n" in schema_part:
+                db_part, schema_text = schema_part.split("\nSchema:\n", 1)
+                schema_text = truncate_schema_text(schema_text, question_part, tokenizer, max_schema_tokens)
+                p = f"{db_part}\nSchema:\n{schema_text}\n\nQuestion:{question_part}"
+        truncated_prompts.append(p)
+
     chats = [
         [{"role": "system", "content": SYSTEM_PROMPT}, {"role": "user", "content": p}]
-        for p in prompts
+        for p in truncated_prompts
     ]
     encoded = tokenizer.apply_chat_template(
         chats,
         tokenize=False,
         add_generation_prompt=True,
     )
-    tokenizer.truncation_side = "left"
     inputs = tokenizer(
         encoded,
         return_tensors="pt",
