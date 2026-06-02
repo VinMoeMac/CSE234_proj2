@@ -161,8 +161,22 @@ def serialize_schema(
                     fk_links[tb].append(ta)
                     seen_links.add((tb, ta))
 
+    # Sort tables by column relevance to question (helps cryptic table names like SAP)
+    # Tables whose columns match the question come first
+    table_order = list(table_cols.keys())
+    if filter_question:
+        q_tokens = set(re.sub(r"[^a-z0-9]", " ", filter_question.lower()).split())
+        def table_score(t: str) -> int:
+            col_tokens = set()
+            for cn in table_col_names[t]:
+                col_tokens |= set(re.sub(r"[^a-z0-9]", " ", cn.lower()).split())
+            t_tokens = set(re.sub(r"[^a-z0-9]", " ", t.lower()).split())
+            return len((col_tokens | t_tokens) & q_tokens)
+        table_order = sorted(table_order, key=table_score, reverse=True)
+
     lines = []
-    for table, cols in table_cols.items():
+    for table in table_order:
+        cols = table_cols[table]
         if table not in allowed_tables:
             continue
         # Approach 1: prepend table description hint

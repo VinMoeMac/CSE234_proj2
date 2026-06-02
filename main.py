@@ -205,7 +205,8 @@ def predict_all(
             schemas.append(schema)
             schema_text = serialize_schema(
                 schema,
-                filter_question=q["question"] if filter_schema else None,
+                filter_question=q["question"],  # always sort tables by relevance
+                show_fk_links=True,             # match training distribution
             )
             prompts.append(format_prompt(q["question"], q["db_id"], schema_text))
 
