@@ -25,16 +25,11 @@
     "question_id": 4,
     "schema_links": {
       "tblFieldDataTimeConstrainedSearches": [
-        "LocationID",
-        "EventID"
+        "LocationID"
       ],
-      "sysdiagrams": [],
       "tblLocationsPoints": [
         "PointID",
-        "EstHError",
-        "AccCategory",
-        "UtmZone",
-        "Datum"
+        "EstHError"
       ]
     }
   },
@@ -48,11 +43,10 @@
   {
     "question_id": 6,
     "schema_links": {
-      "tbl_Saplings": [],
       "tlu_Cover_Cls": [
-        "CoverClass_Num",
         "CoverClass_Text"
-      ]
+      ],
+      "tlu_Roads_and_Trails": []
     }
   },
   {
@@ -60,17 +54,12 @@
     "schema_links": {
       "tbl_Detections": [
         "Distance",
-        "Detection"
-      ],
-      "tbl_Event_Details": [
-        "Event_ID",
-        "Cloud",
-        "Rain",
-        "Wind",
-        "Gust"
+        "Detection",
+        "Sort_Order"
       ],
       "tbl_Events": [
-        "Habitat_Date"
+        "Event_ID",
+        "Start_Time"
       ]
     }
   },
@@ -78,29 +67,16 @@
     "question_id": 8,
     "schema_links": {
       "VERTEBRATES": [
-        "Species",
-        "Common_Name",
-        "Scientific_Name",
-        "Number",
-        "UTMN",
-        "UTMX",
-        "UTME",
-        "UTMY",
-        "Habitat",
-        "BREED",
-        "CLASS",
-        "Survey",
-        "SSMA_TimeStamp"
+        "OBS_TYPE",
+        "Observer"
       ]
     }
   },
   {
     "question_id": 9,
     "schema_links": {
-      "tbl_Deadwood": [],
-      "tbl_Events": [
-        "Location_ID",
-        "Event_Notes"
+      "tbl_Locations": [
+        "Loc_Notes"
       ]
     }
   },
@@ -151,7 +127,9 @@
   {
     "question_id": 11,
     "schema_links": {
-      "Invert_Family": []
+      "Invert_Family": [
+        "Invert_Family"
+      ]
     }
   },
   {
@@ -171,18 +149,20 @@
   {
     "question_id": 14,
     "schema_links": {
-      "tlu_Tree_Cond": [],
       "tbl_Overstory": [
-        "CanPos",
-        "TreeCond"
-      ]
+        "Overstory_ID"
+      ],
+      "tbl_Tree_Tags": [
+        "Tree_Tag_ID"
+      ],
+      "tlu_Roads_and_Trails": [],
+      "tlu_Tree_Cond": []
     }
   },
   {
     "question_id": 15,
     "schema_links": {
       "tbl_Sites": [
-        "Site_ID",
         "GIS_Location_ID",
         "Site_Name",
         "Site_Desc",
@@ -195,24 +175,40 @@
         "Length",
         "Route"
       ],
-      "tlu_Species_LABE": [],
+      "tlu_Species_LAVO": [],
       "xref_Event_Contacts": [],
-      "tbl_Locations": [],
       "tbl_Events": [
-        "Event_ID",
-        "Location_ID",
-        "Start_Date",
         "Start_Time",
         "End_Time",
         "Second_Start_Time",
         "Second_End_Time",
-        "Second_Date",
-        "Protocol_Name",
         "Upload_Date",
         "Site_Treated",
-        "Notes"
+        "Notes",
+        "SSMA_TimeStamp"
       ],
-      "tbl_Event_Details": []
+      "tbl_Locations": [
+        "X_Coord",
+        "Y_Coord",
+        "Coord_Units",
+        "Coord_System",
+        "Est_H_Error",
+        "Accuracy_Notes",
+        "Unit_Code",
+        "Loc_Type",
+        "Updated_Date",
+        "Loc_Notes",
+        "Segment",
+        "GPSUnit",
+        "PDOP",
+        "HDOP",
+        "EPE",
+        "Elevation",
+        "Upload_Date",
+        "Distance",
+        "Network_Code",
+        "Random_Selected"
+      ]
     }
   },
   {
@@ -248,18 +244,15 @@
   {
     "question_id": 17,
     "schema_links": {
-      "tblEventDataHerps": [
-        "EventID",
-        "AirTemp"
+      "tblFieldDataAmphibianCallCounts": [
+        "EventID"
       ],
       "sysdiagrams": [],
-      "tblFieldDataAmphibianCallCounts": [
-        "EventID",
-        "Species_Code",
-        "Number_Observed"
-      ],
       "tblLocations": [
-        "LocationID"
+        "StartLat",
+        "StartLon",
+        "StopLat",
+        "StopLon"
       ]
     }
   },
@@ -279,22 +272,6 @@
       "tlu_Species_LABE": [
         "Species"
       ],
-      "tlu_Species_LAVO": [
-        "Species"
-      ],
-      "tlu_Species_ORCA": [
-        "Species"
-      ],
-      "tlu_Species_REDW": [
-        "Species"
-      ]
-    }
-  },
-  {
-    "question_id": 20,
-    "schema_links": {
-      "tlu_Species_CRLA": [],
-      "tlu_Species_LABE": [],
       "tlu_Species_LAVO": [],
       "tlu_Species_ORCA": [],
       "tlu_Species_REDW": [],
@@ -302,11 +279,20 @@
     }
   },
   {
+    "question_id": 20,
+    "schema_links": {
+      "tbl_Sites": [
+        "Site_ID",
+        "GIS_Location_ID"
+      ],
+      "tlu_Enumerations": [],
+      "xref_Event_Contacts": []
+    }
+  },
+  {
     "question_id": 21,
     "schema_links": {
-      "tbl_Observations": [
-        "Species_ID"
-      ],
+      "tbl_Stations": [],
       "tlu_Species": [
         "Scientific_Name"
       ]
@@ -326,10 +312,20 @@
       "Roadkill": [
         "Species",
         "Year",
-        "Month"
+        "Month",
+        "number_killed"
       ],
-      "WILDLIFE_MASTERLIST": [],
-      "sysdiagrams": []
+      "sysdiagrams": [],
+      "Breeding_Codes": [],
+      "Class": [],
+      "Code": [],
+      "HABITAT_CODES": [],
+      "Invert_Family": [],
+      "Invert_Order": [],
+      "INVERTEBRATES": [],
+      "Month": [],
+      "VERTEBRATES": [],
+      "WILDLIFE_MASTERLIST": []
     }
   },
   {
@@ -339,10 +335,9 @@
         "Comments"
       ],
       "Roadkill": [
-        "Date",
+        "Comments",
         "Year",
-        "Species",
-        "Location"
+        "Month"
       ]
     }
   },
@@ -388,6 +383,10 @@
     "question_id": 30,
     "schema_links": {
       "tblFieldDataTurtleMeasurements": [
+        "LocationID",
+        "EventID",
+        "Notch_Code",
+        "Tag#",
         "Sex",
         "Carapace_Length",
         "Carapace_Width",
@@ -446,12 +445,8 @@
   {
     "question_id": 37,
     "schema_links": {
-      "tbl_Locations": [
-        "Plot_ID",
-        "SiteDescription"
-      ],
       "tbl_Events": [],
-      "sysdiagrams": []
+      "tbl_Locations": []
     }
   },
   {
@@ -468,6 +463,7 @@
         "Event_ID"
       ],
       "tlu_Cover_Cls": [
+        "CoverClass_Num",
         "CoverClass_Text"
       ]
     }
@@ -499,9 +495,25 @@
     "question_id": 43,
     "schema_links": {
       "tblFieldDataTurtleMeasurements": [
-        "EventID"
-      ],
-      "sysdiagrams": []
+        "EventID",
+        "LocationID",
+        "Species_Code",
+        "Sex",
+        "Notch_Code",
+        "Tag#",
+        "Capture_Method",
+        "Substrate_Temperature",
+        "Habitat",
+        "Behavior",
+        "Age",
+        "Carapace_Length",
+        "Carapace_Width",
+        "Plastron_Length",
+        "Plastron_Width",
+        "Weight",
+        "Ectoparasites",
+        "Gravid"
+      ]
     }
   },
   {
@@ -514,43 +526,25 @@
     "question_id": 45,
     "schema_links": {
       "tbl_Tree_Tags": [
+        "Tree_Tag_ID",
+        "Location_ID",
         "Tag",
-        "Location_ID"
-      ],
-      "tlu_Can_Pos": [],
-      "tlu_Cover_Cls": [],
-      "tlu_DecayStage": [],
-      "tlu_Live_Dead": [],
-      "tlu_Mod_Num": [],
-      "tlu_Presence": [],
-      "tlu_R1_RestOfPlot": [],
-      "tlu_Yes_No": [],
-      "tlu_PlantSpecies": [],
-      "tlu_Roads_and_Trails": [],
-      "tlu_Slope_Shape": []
+        "oldPlot",
+        "Module",
+        "Xcoord",
+        "Ycoord",
+        "SpCode",
+        "Plot"
+      ]
     }
   },
   {
     "question_id": 46,
     "schema_links": {
-      "tlu_Can_Pos": [
-        "CanPos_Num"
-      ],
-      "tlu_Cover_Cls": [],
-      "tlu_DecayStage": [],
-      "tlu_Live_Dead": [],
-      "tlu_Mod_Num": [],
-      "tlu_PlaceNames": [],
-      "tlu_PlantSpecies": [
-        "SpeciesCode"
-      ],
-      "tlu_Presence": [],
-      "tlu_R1_RestOfPlot": [],
-      "tlu_Roads_and_Trails": [],
-      "tlu_Slope_Shape": [],
-      "tlu_topo_position": [],
-      "tlu_Tree_Cond": [],
-      "tlu_Yes_No": []
+      "tbl_WitnessTrees": [
+        "Witness_SpCode",
+        "Witness_DBH"
+      ]
     }
   },
   {
@@ -602,10 +596,8 @@
     "schema_links": {
       "tbl_MacroHabitat": [
         "Event_ID",
+        "MacroHab",
         "Hydrology"
-      ],
-      "xref_Event_Contacts": [
-        "Event_ID"
       ]
     }
   },
@@ -613,8 +605,16 @@
     "question_id": 53,
     "schema_links": {
       "tblFieldDataSnakeDataCollection": [
+        "RecordID",
+        "LocationID",
+        "EventID",
+        "SnakeID",
         "Sex",
-        "Weight"
+        "SVL",
+        "TLength"
+      ],
+      "tluSpecies": [
+        "Scientific_Name"
       ]
     }
   },
@@ -625,16 +625,7 @@
         "X_Coord",
         "Y_Coord"
       ],
-      "tlu_Can_Pos": [],
-      "tlu_Cover_Cls": [],
-      "tlu_DecayStage": [],
-      "tlu_Live_Dead": [],
-      "tlu_Mod_Num": [],
-      "tlu_Presence": [],
-      "tlu_R1_RestOfPlot": [],
-      "tlu_Slope_Shape": [],
-      "tlu_Tree_Cond": [],
-      "tlu_Yes_No": []
+      "sysdiagrams": []
     }
   },
   {
@@ -664,16 +655,24 @@
     "question_id": 58,
     "schema_links": {
       "tbl_Overstory": [
-        "Overstory_ID"
+        "TreeTag",
+        "SpCode",
+        "CanPos",
+        "TreeCond"
       ],
-      "tbl_Saplings": [
-        "Saplings_ID"
+      "tlu_PlaceNames": [],
+      "tlu_Tree_Cond": [],
+      "tlu_PlantSpecies": [
+        "CommonName"
       ],
-      "tbl_Tree_Tags": [
-        "Tree_Tag_ID"
-      ],
+      "tlu_Mod_Num": [],
+      "tlu_DecayStage": [],
+      "tlu_Live_Dead": [],
+      "tlu_Can_Pos": [],
+      "tlu_Presence": [],
       "tlu_Roads_and_Trails": [],
-      "tlu_Tree_Cond": []
+      "tlu_Yes_No": [],
+      "tlu_R1_RestOfPlot": []
     }
   },
   {
@@ -695,6 +694,9 @@
     "question_id": 61,
     "schema_links": {
       "tblFieldDataSnakeDataCollection": [
+        "RecordID",
+        "LocationID",
+        "EventID",
         "SnakeID",
         "SVL"
       ]
@@ -712,11 +714,8 @@
     "schema_links": {
       "tbl_Observations": [
         "Observation_ID",
-        "Event_ID"
-      ],
-      "xref_Event_Contacts": [],
-      "tbl_Events": [
-        "Habitat_Date"
+        "Event_ID",
+        "Sort_Order"
       ]
     }
   },
@@ -778,44 +777,41 @@
   {
     "question_id": 69,
     "schema_links": {
-      "tbl_Nests": [
-        "Event_ID",
-        "Module"
+      "tbl_Saplings": [
+        "spcode",
+        "Condition"
       ],
-      "tlu_Cover_Cls": [],
-      "tlu_Presence": [],
-      "tlu_Mod_Num": [],
+      "tlu_PlaceNames": [],
       "tlu_Can_Pos": [],
-      "tlu_Yes_No": [],
+      "tlu_Cover_Cls": [],
       "tlu_DecayStage": [],
       "tlu_Live_Dead": [],
-      "tlu_PlantSpecies": [
-        "CommonName"
-      ]
+      "tlu_Mod_Num": [],
+      "tlu_PlantSpecies": [],
+      "tlu_Presence": [],
+      "tlu_R1_RestOfPlot": [],
+      "tlu_Roads_and_Trails": [],
+      "tlu_Slope_Shape": [],
+      "tlu_topo_position": [],
+      "tlu_Tree_Cond": [],
+      "tlu_Yes_No": []
     }
   },
   {
     "question_id": 70,
     "schema_links": {
       "VERTEBRATES": [
+        "CLASS",
         "OBS_TYPE"
-      ],
-      "Class": [],
-      "Invert_Order": [],
-      "HABITAT_CODES": [],
-      "Code": [],
-      "Month": [],
-      "Breeding_Codes": [],
-      "WILDLIFE_MASTERLIST": [],
-      "Roadkill": [],
-      "INVERTEBRATES": []
+      ]
     }
   },
   {
     "question_id": 71,
     "schema_links": {
       "tbl_Events": [
-        "Event_ID"
+        "Event_ID",
+        "Updated_Date"
       ],
       "tlu_DecayStage": [
         "DecayStage_ID"
@@ -833,6 +829,7 @@
     "question_id": 73,
     "schema_links": {
       "tbl_MicroHabitat": [
+        "Event_ID",
         "LightIndex",
         "Evergreen",
         "Deciduous",
@@ -840,14 +837,10 @@
         "Herb",
         "WoodyDebris",
         "Litter",
-        "BareGround"
-      ],
-      "tlu_Species_CRLA": [],
-      "tlu_Species_LABE": [],
-      "tlu_Species_LAVO": [],
-      "tlu_Species_ORCA": [],
-      "tlu_Species_REDW": [],
-      "tlu_Species_WHIS": []
+        "BareGround",
+        "Rock",
+        "CoverPercent"
+      ]
     }
   },
   {
@@ -929,15 +922,15 @@
   {
     "question_id": 76,
     "schema_links": {
-      "tlu_topo_position": [
-        "TopoPosition"
-      ]
+      "tlu_topo_position": []
     }
   },
   {
     "question_id": 77,
     "schema_links": {
-      "tbl_Sites": []
+      "tbl_Sites": [
+        "Site_ID"
+      ]
     }
   },
   {
@@ -968,7 +961,7 @@
         "Location_ID",
         "Random_Selected"
       ],
-      "tlu_Enumerations": [],
+      "tlu_Species_LAVO": [],
       "xref_Event_Contacts": []
     }
   },
@@ -1020,91 +1013,26 @@
     "schema_links": {
       "tbl_Edit_Log": [
         "Person",
-        "Table",
-        "Field",
-        "Date_Change",
-        "Value_Old",
-        "Value_New",
-        "Reason",
-        "ID"
+        "Table"
       ],
       "tlu_Contacts": [],
+      "tbl_Events": [
+        "Event_ID",
+        "Upload_Date",
+        "Site_Treated",
+        "Notes",
+        "SSMA_TimeStamp"
+      ],
+      "tbl_Event_Details": [],
+      "tbl_Locations": [],
+      "tbl_Sites": [],
+      "tbl_MacroHabitat": [],
+      "tbl_MicroHabitat": [],
       "xref_Event_Contacts": [
         "Event_ID",
         "Contact_ID",
         "Contact_Role",
         "Upload_Date"
-      ],
-      "tbl_Events": [
-        "Start_Date",
-        "Start_Time",
-        "End_Time",
-        "Second_Start_Time",
-        "Second_End_Time",
-        "Second_Date",
-        "Protocol_Name",
-        "Site_Treated",
-        "Notes",
-        "SSMA_TimeStamp"
-      ],
-      "tbl_Locations": [
-        "Location_ID",
-        "Site_ID",
-        "Loc_Name",
-        "Date_Monumented",
-        "X_Coord",
-        "Y_Coord",
-        "Coord_Units",
-        "Coord_System",
-        "UTM_Zone",
-        "Datum",
-        "Est_H_Error",
-        "Accuracy_Notes",
-        "Unit_Code",
-        "Loc_Type",
-        "Updated_Date",
-        "Loc_Notes",
-        "Segment",
-        "Species",
-        "GPSUnit",
-        "PDOP",
-        "HDOP",
-        "EPE",
-        "Elevation",
-        "Upload_Date",
-        "Distance",
-        "Network_Code",
-        "Random_Selected",
-        "County",
-        "Watershed",
-        "Subwatershed",
-        "Rnd_Plt_In"
-      ],
-      "tbl_Sites": [
-        "GIS_Location_ID",
-        "Site_Name",
-        "Site_Desc",
-        "Unit_Code",
-        "Site_Notes",
-        "Site_Start_X",
-        "Site_Start_Y",
-        "Site_End_X",
-        "Site_End_Y",
-        "Length",
-        "Route"
-      ],
-      "tbl_Db_Revisions": [
-        "Revision_Contact_ID",
-        "Db_Meta_ID",
-        "Revision_Date",
-        "Revision_Reason",
-        "Revision_Desc"
-      ],
-      "tbl_Db_Meta": [
-        "Meta_MID",
-        "DSC_GUID",
-        "Meta_File_Name",
-        "SSMA_TimeStamp"
       ]
     }
   },
@@ -1139,29 +1067,32 @@
   {
     "question_id": 90,
     "schema_links": {
-      "tbl_Locations": [
-        "Site_ID"
+      "tbl_Sites": [
+        "Site_ID",
+        "GIS_Location_ID"
       ]
     }
   },
   {
     "question_id": 91,
     "schema_links": {
-      "WILDLIFE_MASTERLIST": [
-        "COMMON_NAME"
-      ],
-      "Invert_Family": [],
-      "Invert_Order": [],
-      "Class": []
+      "VERTEBRATES": [
+        "Common_Name",
+        "Scientific_Name",
+        "Observer",
+        "Notes"
+      ]
     }
   },
   {
     "question_id": 92,
     "schema_links": {
+      "tbl_Deadwood": [],
       "tlu_DecayStage": [
         "DecayStage_ID",
         "DecayStage_Descr"
-      ]
+      ],
+      "sysdiagrams": []
     }
   },
   {
@@ -1191,10 +1122,16 @@
     "question_id": 96,
     "schema_links": {
       "Breeding_Codes": [
+        "Breed",
         "Definition"
       ],
       "Invert_Family": [],
-      "Invert_Order": []
+      "Invert_Order": [],
+      "VERTEBRATES": [
+        "Species",
+        "Common_Name"
+      ],
+      "sysdiagrams": []
     }
   },
   {
@@ -1202,12 +1139,12 @@
     "schema_links": {
       "tbl_Density": [
         "Density_ID",
-        "Half_meter",
-        "One_meter",
-        "One_half_meter",
-        "Two_meter"
+        "Event_ID",
+        "Half_meter"
       ],
-      "tbl_Events": []
+      "tbl_Events": [
+        "Event_ID"
+      ]
     }
   },
   {
@@ -1228,11 +1165,40 @@
     "question_id": 100,
     "schema_links": {
       "tbl_Stations": [
-        "Station"
+        "Station_ID",
+        "Updated_date",
+        "Updated_by",
+        "Updated_notes"
+      ],
+      "tbl_Sites": [],
+      "tbl_Observations": [
+        "Observation_ID",
+        "Event_ID",
+        "Species_ID",
+        "Sort_Order"
       ],
       "tlu_Species": [
         "Species_ID",
-        "Common_Name"
+        "Scientific_Name",
+        "Common_Name",
+        "Species_Code",
+        "Source",
+        "Origin",
+        "Status",
+        "T&E_Status",
+        "Habitat",
+        "BNA_Account",
+        "TSN"
+      ],
+      "xref_Event_Contacts": [
+        "Event_ID",
+        "Contact_ID",
+        "Contact_Role"
+      ],
+      "xref_Species_Alternate_Names": [
+        "Species_ID",
+        "Alternate_Name",
+        "Alternate_Type"
       ]
     }
   },
