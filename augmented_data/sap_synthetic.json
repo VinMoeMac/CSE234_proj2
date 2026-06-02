@@ -500,5 +500,378 @@
     },
     "question_id": 9038,
     "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-Business Partners",
+    "question": "What are the phone numbers and email addresses of business partners?",
+    "schema_links": {
+      "OCRD": [
+        "CardCode",
+        "CardName",
+        "Phone1",
+        "E_Mail"
+      ]
+    },
+    "question_id": 9039,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-Business Partners",
+    "question": "Show the target amount and sales employee for each business partner.",
+    "schema_links": {
+      "OCRD": [
+        "CardCode",
+        "SlpCode",
+        "DfltDisc"
+      ]
+    },
+    "question_id": 9040,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-Human Resources",
+    "question": "List each employee's role ID and the date they were assigned to that role.",
+    "schema_links": {
+      "HEM6": [
+        "empID",
+        "roleID"
+      ]
+    },
+    "question_id": 9041,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-Human Resources",
+    "question": "What is the marital status and number of children for each employee?",
+    "schema_links": {
+      "OHEM": [
+        "empID",
+        "martStatus",
+        "nChildren"
+      ]
+    },
+    "question_id": 9042,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-Human Resources",
+    "question": "Show all employees and their citizenship and passport numbers.",
+    "schema_links": {
+      "OHEM": [
+        "empID",
+        "citizenshp",
+        "passportNo"
+      ]
+    },
+    "question_id": 9043,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-Human Resources",
+    "question": "List employee performance reviews with grade and manager.",
+    "schema_links": {
+      "HEM3": [
+        "empID",
+        "grade",
+        "manager",
+        "reviewDesc"
+      ]
+    },
+    "question_id": 9044,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-Human Resources",
+    "question": "Show all employee absence records with reason and approval.",
+    "schema_links": {
+      "HEM1": [
+        "empID",
+        "reason",
+        "approvedBy",
+        "fromDate",
+        "toDate"
+      ]
+    },
+    "question_id": 9045,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-Human Resources",
+    "question": "Which employees have a salary greater than 5000?",
+    "schema_links": {
+      "OHEM": [
+        "empID",
+        "firstName",
+        "lastName",
+        "salary"
+      ]
+    },
+    "question_id": 9046,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-Human Resources",
+    "question": "Show the previous employment history including employer and position for each employee.",
+    "schema_links": {
+      "HEM4": [
+        "empID",
+        "employer",
+        "position",
+        "fromDate",
+        "toDate"
+      ]
+    },
+    "question_id": 9047,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-General",
+    "question": "List all business objects with their names and types.",
+    "schema_links": {
+      "OBOB": [
+        "BisObjType",
+        "BisObjName"
+      ]
+    },
+    "question_id": 9048,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-General",
+    "question": "Show all users with their first name, last name, and email.",
+    "schema_links": {
+      "OUSR": [
+        "USERID",
+        "U_NAME",
+        "E_Mail"
+      ]
+    },
+    "question_id": 9049,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-General",
+    "question": "What are the form names and their descriptions in the system?",
+    "schema_links": {
+      "OCFM": [
+        "FormID",
+        "Name"
+      ]
+    },
+    "question_id": 9050,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-Reports",
+    "question": "Show all queries with their category and last update date.",
+    "schema_links": {
+      "OUQR": [
+        "QName",
+        "QCategory",
+        "QLastDate"
+      ]
+    },
+    "question_id": 9051,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-Reports",
+    "question": "List report documents that use email font conversion.",
+    "schema_links": {
+      "SRT2": [
+        "DocCode",
+        "DocName",
+        "EmailFont",
+        "SwpInEmail"
+      ]
+    },
+    "question_id": 9052,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-Reports",
+    "question": "Show the report wizard ID, card code, and payment number for each document.",
+    "schema_links": {
+      "RDOC": [
+        "WizardId",
+        "CardCode",
+        "PmntNum"
+      ]
+    },
+    "question_id": 9053,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-Sales Opportunities",
+    "question": "Show all opportunity stages with their name and closing percentage.",
+    "schema_links": {
+      "OOST": [
+        "Num",
+        "Name",
+        "ClsPrcnt"
+      ]
+    },
+    "question_id": 9054,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-Sales Opportunities",
+    "question": "List sales opportunities with their predicted closing date and sales employee.",
+    "schema_links": {
+      "OPR1": [
+        "OpprId",
+        "CloseDate",
+        "SlpCode"
+      ]
+    },
+    "question_id": 9055,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-Sales Opportunities",
+    "question": "What is the total amount and currency for each sales opportunity?",
+    "schema_links": {
+      "OPR1": [
+        "OpprId",
+        "MaxSumLoc",
+        "DocCurr"
+      ]
+    },
+    "question_id": 9056,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-Inventory and Production",
+    "question": "Show all production orders with their planned quantity and status.",
+    "schema_links": {
+      "OWOR": [
+        "DocNum",
+        "PlannedQty",
+        "Status"
+      ]
+    },
+    "question_id": 9057,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-Inventory and Production",
+    "question": "List items with their unit of measure and price.",
+    "schema_links": {
+      "OITM": [
+        "ItemCode",
+        "ItemName",
+        "SalUnitMsr",
+        "LastPurPrc"
+      ]
+    },
+    "question_id": 9058,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-Inventory and Production",
+    "question": "Show goods receipt documents with their posting date and total amount.",
+    "schema_links": {
+      "OPDN": [
+        "DocNum",
+        "DocDate",
+        "DocTotal"
+      ]
+    },
+    "question_id": 9059,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-Finance",
+    "question": "Show all chart of accounts with account name and account type.",
+    "schema_links": {
+      "OACT": [
+        "AcctCode",
+        "AcctName",
+        "ActType"
+      ]
+    },
+    "question_id": 9060,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-Finance",
+    "question": "List all open invoices with customer code and due date.",
+    "schema_links": {
+      "OINV": [
+        "DocNum",
+        "CardCode",
+        "DocDueDate",
+        "DocTotal"
+      ]
+    },
+    "question_id": 9061,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-Finance",
+    "question": "Show journal entries with their debit and credit amounts.",
+    "schema_links": {
+      "JDT1": [
+        "TransId",
+        "Debit",
+        "Credit",
+        "Account"
+      ]
+    },
+    "question_id": 9062,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-Banking",
+    "question": "List all outgoing payments with vendor code and payment date.",
+    "schema_links": {
+      "OVPM": [
+        "DocNum",
+        "CardCode",
+        "DocDate",
+        "DocTotal"
+      ]
+    },
+    "question_id": 9063,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-Banking",
+    "question": "Show checks with their account number and check amount.",
+    "schema_links": {
+      "OCHO": [
+        "CheckKey",
+        "AcctNum",
+        "CheckSum"
+      ]
+    },
+    "question_id": 9064,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-Service",
+    "question": "List service calls with their priority and assigned technician.",
+    "schema_links": {
+      "OSCL": [
+        "callID",
+        "Priority",
+        "technician"
+      ]
+    },
+    "question_id": 9065,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-Service",
+    "question": "Show all service contracts and their contract type.",
+    "schema_links": {
+      "OCTR": [
+        "ContractID",
+        "ContractType",
+        "Status"
+      ]
+    },
+    "question_id": 9066,
+    "gold_sql": ""
   }
 ]

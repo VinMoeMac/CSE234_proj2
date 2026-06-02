@@ -81,11 +81,17 @@ run_and_eval "augmented-oversample" \
     --epochs 5 --batch_size 1 --grad_accum 16 --lr 1e-4 --max_seq_len 2048 \
     --show_fk_links --sort_by_question --oversample_factor 3
 
+# Exp 6: Bigger synthetic dataset (67 examples) + FK + sorting
+run_and_eval "augmented-v2-fk-sorted" \
+    --train augmented_data/train_with_sap.json \
+    --epochs 5 --batch_size 1 --grad_accum 16 --lr 1e-4 --max_seq_len 2048 \
+    --show_fk_links --sort_by_question
+
 echo ""
 echo "========================================"
 echo "FINAL SUMMARY"
 echo "========================================"
-for name in fk-sorted-v1 augmented-10ep augmented-r64 augmented-lr5e5 augmented-oversample; do
+for name in fk-sorted-v1 augmented-10ep augmented-r64 augmented-lr5e5 augmented-oversample augmented-v2-fk-sorted; do
     if [ -f "preds_${name}.json" ]; then
         echo -n "$name: "
         python Project2/eval.py \

@@ -211,6 +211,154 @@ SAP_SYNTHETIC = [
         "question": "List customer codes with their credit limits and balance.",
         "schema_links": {"OCRD": ["CardCode", "CreditLine", "Balance"]}
     },
+    {
+        "db_id": "SBODemoUS-Business Partners",
+        "question": "What are the phone numbers and email addresses of business partners?",
+        "schema_links": {"OCRD": ["CardCode", "CardName", "Phone1", "E_Mail"]}
+    },
+    {
+        "db_id": "SBODemoUS-Business Partners",
+        "question": "Show the target amount and sales employee for each business partner.",
+        "schema_links": {"OCRD": ["CardCode", "SlpCode", "DfltDisc"]}
+    },
+    # SBODemoUS-Human Resources (more examples for still-failing module)
+    {
+        "db_id": "SBODemoUS-Human Resources",
+        "question": "List each employee's role ID and the date they were assigned to that role.",
+        "schema_links": {"HEM6": ["empID", "roleID"]}
+    },
+    {
+        "db_id": "SBODemoUS-Human Resources",
+        "question": "What is the marital status and number of children for each employee?",
+        "schema_links": {"OHEM": ["empID", "martStatus", "nChildren"]}
+    },
+    {
+        "db_id": "SBODemoUS-Human Resources",
+        "question": "Show all employees and their citizenship and passport numbers.",
+        "schema_links": {"OHEM": ["empID", "citizenshp", "passportNo"]}
+    },
+    {
+        "db_id": "SBODemoUS-Human Resources",
+        "question": "List employee performance reviews with grade and manager.",
+        "schema_links": {"HEM3": ["empID", "grade", "manager", "reviewDesc"]}
+    },
+    {
+        "db_id": "SBODemoUS-Human Resources",
+        "question": "Show all employee absence records with reason and approval.",
+        "schema_links": {"HEM1": ["empID", "reason", "approvedBy", "fromDate", "toDate"]}
+    },
+    {
+        "db_id": "SBODemoUS-Human Resources",
+        "question": "Which employees have a salary greater than 5000?",
+        "schema_links": {"OHEM": ["empID", "firstName", "lastName", "salary"]}
+    },
+    {
+        "db_id": "SBODemoUS-Human Resources",
+        "question": "Show the previous employment history including employer and position for each employee.",
+        "schema_links": {"HEM4": ["empID", "employer", "position", "fromDate", "toDate"]}
+    },
+    # SBODemoUS-General (still failing)
+    {
+        "db_id": "SBODemoUS-General",
+        "question": "List all business objects with their names and types.",
+        "schema_links": {"OBOB": ["BisObjType", "BisObjName"]}
+    },
+    {
+        "db_id": "SBODemoUS-General",
+        "question": "Show all users with their first name, last name, and email.",
+        "schema_links": {"OUSR": ["USERID", "U_NAME", "E_Mail"]}
+    },
+    {
+        "db_id": "SBODemoUS-General",
+        "question": "What are the form names and their descriptions in the system?",
+        "schema_links": {"OCFM": ["FormID", "Name"]}
+    },
+    # SBODemoUS-Reports (still failing)
+    {
+        "db_id": "SBODemoUS-Reports",
+        "question": "Show all queries with their category and last update date.",
+        "schema_links": {"OUQR": ["QName", "QCategory", "QLastDate"]}
+    },
+    {
+        "db_id": "SBODemoUS-Reports",
+        "question": "List report documents that use email font conversion.",
+        "schema_links": {"SRT2": ["DocCode", "DocName", "EmailFont", "SwpInEmail"]}
+    },
+    {
+        "db_id": "SBODemoUS-Reports",
+        "question": "Show the report wizard ID, card code, and payment number for each document.",
+        "schema_links": {"RDOC": ["WizardId", "CardCode", "PmntNum"]}
+    },
+    # SBODemoUS-Sales Opportunities (still failing)
+    {
+        "db_id": "SBODemoUS-Sales Opportunities",
+        "question": "Show all opportunity stages with their name and closing percentage.",
+        "schema_links": {"OOST": ["Num", "Name", "ClsPrcnt"]}
+    },
+    {
+        "db_id": "SBODemoUS-Sales Opportunities",
+        "question": "List sales opportunities with their predicted closing date and sales employee.",
+        "schema_links": {"OPR1": ["OpprId", "CloseDate", "SlpCode"]}
+    },
+    {
+        "db_id": "SBODemoUS-Sales Opportunities",
+        "question": "What is the total amount and currency for each sales opportunity?",
+        "schema_links": {"OPR1": ["OpprId", "MaxSumLoc", "DocCurr"]}
+    },
+    # SBODemoUS-Inventory and Production (still failing)
+    {
+        "db_id": "SBODemoUS-Inventory and Production",
+        "question": "Show all production orders with their planned quantity and status.",
+        "schema_links": {"OWOR": ["DocNum", "PlannedQty", "Status"]}
+    },
+    {
+        "db_id": "SBODemoUS-Inventory and Production",
+        "question": "List items with their unit of measure and price.",
+        "schema_links": {"OITM": ["ItemCode", "ItemName", "SalUnitMsr", "LastPurPrc"]}
+    },
+    {
+        "db_id": "SBODemoUS-Inventory and Production",
+        "question": "Show goods receipt documents with their posting date and total amount.",
+        "schema_links": {"OPDN": ["DocNum", "DocDate", "DocTotal"]}
+    },
+    # SBODemoUS-Finance (more examples)
+    {
+        "db_id": "SBODemoUS-Finance",
+        "question": "Show all chart of accounts with account name and account type.",
+        "schema_links": {"OACT": ["AcctCode", "AcctName", "ActType"]}
+    },
+    {
+        "db_id": "SBODemoUS-Finance",
+        "question": "List all open invoices with customer code and due date.",
+        "schema_links": {"OINV": ["DocNum", "CardCode", "DocDueDate", "DocTotal"]}
+    },
+    {
+        "db_id": "SBODemoUS-Finance",
+        "question": "Show journal entries with their debit and credit amounts.",
+        "schema_links": {"JDT1": ["TransId", "Debit", "Credit", "Account"]}
+    },
+    # SBODemoUS-Banking (more examples)
+    {
+        "db_id": "SBODemoUS-Banking",
+        "question": "List all outgoing payments with vendor code and payment date.",
+        "schema_links": {"OVPM": ["DocNum", "CardCode", "DocDate", "DocTotal"]}
+    },
+    {
+        "db_id": "SBODemoUS-Banking",
+        "question": "Show checks with their account number and check amount.",
+        "schema_links": {"OCHO": ["CheckKey", "AcctNum", "CheckSum"]}
+    },
+    # SBODemoUS-Service (more examples)
+    {
+        "db_id": "SBODemoUS-Service",
+        "question": "List service calls with their priority and assigned technician.",
+        "schema_links": {"OSCL": ["callID", "Priority", "technician"]}
+    },
+    {
+        "db_id": "SBODemoUS-Service",
+        "question": "Show all service contracts and their contract type.",
+        "schema_links": {"OCTR": ["ContractID", "ContractType", "Status"]}
+    },
 ]
 
 
