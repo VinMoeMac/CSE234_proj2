@@ -161,6 +161,14 @@ def serialize_schema(
                     fk_links[tb].append(ta)
                     seen_links.add((tb, ta))
 
+    def split_identifier(name: str) -> set[str]:
+        """Split camelCase/PascalCase/snake_case identifiers into tokens."""
+        # insert space before uppercase letters preceded by lowercase
+        spaced = re.sub(r"([a-z])([A-Z])", r"\1 \2", name)
+        # insert space before sequences of uppercase followed by lowercase
+        spaced = re.sub(r"([A-Z]+)([A-Z][a-z])", r"\1 \2", spaced)
+        return set(re.sub(r"[^a-z0-9]", " ", spaced.lower()).split())
+
     # Sort tables by column relevance to question (helps cryptic table names like SAP)
     # Tables whose columns match the question come first
     table_order = list(table_cols.keys())
@@ -169,8 +177,8 @@ def serialize_schema(
         def table_score(t: str) -> int:
             col_tokens = set()
             for cn in table_col_names[t]:
-                col_tokens |= set(re.sub(r"[^a-z0-9]", " ", cn.lower()).split())
-            t_tokens = set(re.sub(r"[^a-z0-9]", " ", t.lower()).split())
+                col_tokens |= split_identifier(cn)
+            t_tokens = split_identifier(t)
             return len((col_tokens | t_tokens) & q_tokens)
         table_order = sorted(table_order, key=table_score, reverse=True)
 
