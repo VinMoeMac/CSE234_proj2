@@ -176,6 +176,7 @@ def main():
             "use_table_desc": args.use_table_desc,
             "show_fk_links": args.show_fk_links,
             "sort_by_question": args.sort_by_question,
+            "schema_version": "v3-camelcase-split",  # data_prep.py version
             "effective_batch_size": args.batch_size * args.grad_accum,
             "train_examples": len(train_dataset),
             "val_examples": len(val_dataset),
