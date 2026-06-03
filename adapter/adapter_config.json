@@ -31,8 +31,8 @@
   "revision": null,
   "target_modules": [
     "v_proj",
-    "o_proj",
     "q_proj",
+    "o_proj",
     "k_proj"
   ],
   "target_parameters": null,
