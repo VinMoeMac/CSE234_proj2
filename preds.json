@@ -13,10 +13,11 @@
   {
     "question_id": 2,
     "schema_links": {
+      "DISTRACT": [
+        "CASEWGT",
+        "PSUSTRAT"
+      ],
       "EDRPRECRASH": [
-        "CASEID",
-        "PSU",
-        "VERSION",
         "PCODE",
         "PTIME",
         "PVALUE"
@@ -34,11 +35,6 @@
   {
     "question_id": 4,
     "schema_links": {
-      "tblLocationsPoints": [
-        "LocationID",
-        "UTMX",
-        "UTMY"
-      ],
       "tblFieldDataTimeConstrainedSearches": [
         "LocationID"
       ]
@@ -62,8 +58,9 @@
         "SpCode",
         "Cover"
       ],
-      "tlu_Cover_Cls": [],
-      "tbl_Deadwood": []
+      "tlu_Cover_Cls": [
+        "CoverClass_Text"
+      ]
     }
   },
   {
@@ -80,7 +77,7 @@
     "schema_links": {
       "INVERTEBRATES": [
         "OBS_TYPE",
-        "Common_Name"
+        "Number"
       ],
       "VERTEBRATES": [
         "OBS_TYPE",
@@ -104,8 +101,7 @@
     "question_id": 10,
     "schema_links": {
       "ACC_EM_Chronic_Absenteeism": [
-        "ENTITY_NAME",
-        "ABSENT_RATE"
+        "ENTITY_NAME"
       ]
     }
   },
@@ -128,8 +124,7 @@
         "NAME"
       ],
       "APHA": [
-        "OWNER",
-        "START"
+        "OWNER"
       ]
     }
   },
@@ -153,26 +148,39 @@
     "question_id": 14,
     "schema_links": {
       "tbl_Overstory": [
-        "Overstory_ID"
+        "CanPos",
+        "TreeCond"
       ],
-      "tbl_Tree_Tags": [
-        "Tree_Tag_ID"
-      ],
-      "tlu_Roads_and_Trails": [],
-      "tlu_Tree_Cond": []
+      "tlu_Presence": [],
+      "tlu_Can_Pos": [],
+      "tlu_Cover_Cls": [],
+      "tlu_PlantSpecies": [],
+      "tbl_Events": [],
+      "tbl_Tree_Tags": [],
+      "tbl_Saplings": [],
+      "tbl_Seedlings": [],
+      "tbl_Deadwood": [],
+      "tbl_Nests": [],
+      "tbl_WitnessTrees": []
     }
   },
   {
     "question_id": 15,
     "schema_links": {
-      "tbl_Sites": []
+      "tbl_Db_Meta": [],
+      "tbl_Db_Revisions": []
     }
   },
   {
     "question_id": 16,
     "schema_links": {
       "Annual_EM_SCIENCE": [
-        "ASSESSMENT_NAME"
+        "ENTITY_CD",
+        "YEAR",
+        "LEVEL1_%TESTED",
+        "LEVEL2_%TESTED",
+        "LEVEL3_%TESTED",
+        "LEVEL4_%TESTED"
       ],
       "ACC_EM_Core_and_Weighted_Performance": [
         "ENTITY_CD",
@@ -185,8 +193,17 @@
         "ENTITY_CD",
         "SUBJECT",
         "YEAR",
-        "WGT_LEVEL",
-        "WEIGHTED_INDEX"
+        "CORE_LEVEL",
+        "CORE_INDEX"
+      ],
+      "BOCES_and_N/RC": [],
+      "Inexperienced_Teachers_and_Principals": [
+        "ENTITY_CD",
+        "YEAR",
+        "PER_TEACH_LOW",
+        "PER_TEACH_HIGH",
+        "PER_PRINC_LOW",
+        "PER_PRINC_HIGH"
       ]
     }
   },
@@ -195,7 +212,16 @@
     "schema_links": {
       "tblFieldDataAmphibianCallCounts": [
         "EventID",
-        "LocationID"
+        "LocationID",
+        "Species_Code",
+        "Call_Index",
+        "Number_Observed"
+      ],
+      "tblFieldDataWaterProperties": [
+        "RecordID",
+        "LocationID",
+        "EventID",
+        "TempC"
       ]
     }
   },
@@ -203,6 +229,13 @@
     "question_id": 18,
     "schema_links": {
       "OCC": [
+        "CASEID",
+        "PSU",
+        "CASENO",
+        "CASENUMBER",
+        "CATEGORY",
+        "VEHNO",
+        "OCCNO",
         "AGE",
         "HEIGHT"
       ]
@@ -212,51 +245,46 @@
     "question_id": 19,
     "schema_links": {
       "tlu_Species_CRLA": [
-        "Species",
-        "Park"
+        "Species"
       ],
       "tlu_Species_LABE": [
-        "Species",
-        "Park"
+        "Species"
       ],
       "tlu_Species_LAVO": [
-        "Species",
-        "Park"
-      ],
-      "tlu_Species_ORCA": [
-        "Species",
-        "Park"
-      ],
-      "tlu_Species_REDW": [
-        "Species",
-        "Park"
-      ],
-      "tlu_Species_WHIS": [
-        "Species",
-        "Park"
+        "Species"
       ]
     }
   },
   {
     "question_id": 20,
     "schema_links": {
+      "tbl_Event_Details": [
+        "Event_ID",
+        "SSMA_TimeStamp"
+      ],
       "tlu_Species_CRLA": [
-        "Species"
+        "SampleYear",
+        "Park"
       ],
       "tlu_Species_LABE": [
-        "Species"
+        "SampleYear",
+        "Park"
       ],
       "tlu_Species_LAVO": [
-        "Species"
+        "SampleYear",
+        "Park"
       ],
       "tlu_Species_ORCA": [
-        "Species"
+        "SampleYear",
+        "Park"
       ],
       "tlu_Species_REDW": [
-        "Species"
+        "SampleYear",
+        "Park"
       ],
       "tlu_Species_WHIS": [
-        "Species"
+        "SampleYear",
+        "Park"
       ]
     }
   },
@@ -283,8 +311,7 @@
       "Roadkill": [
         "Species",
         "Year",
-        "Month",
-        "number_killed"
+        "Month"
       ]
     }
   },
@@ -323,8 +350,6 @@
         "CASENUMBER",
         "CATEGORY",
         "VEHNO",
-        "VINDecodedOn",
-        "VINDecodeError",
         "MakeId",
         "Make"
       ],
@@ -335,59 +360,7 @@
         "CASENUMBER",
         "CATEGORY",
         "VEHNO",
-        "VIN",
-        "VINLENGTH",
-        "VPICMAKE",
-        "VPICMODEL",
-        "VPICBODYCLASS",
-        "ICFINALBODY",
-        "MAKE",
-        "MODEL",
-        "MODELYR",
-        "BODYTYPE",
-        "BODYCAT",
-        "VEHCLASS",
-        "SPECUSE",
-        "TRANSTAT",
-        "DAMPLANE",
-        "DAMSEV",
-        "CURBWT",
-        "CURBSRC",
-        "CARGOWT",
-        "CARGOSRC",
-        "INSPTYPE",
-        "INSPLAG",
-        "TOWED",
-        "SPEEDLIMIT",
-        "DRPRESENT",
-        "PARALCOHOL",
-        "ALCTEST",
-        "ALCTESTRESULT",
-        "ALCTESTSRC",
-        "PARDRUG",
-        "DRUGTEST",
-        "ZIP",
-        "RACE",
-        "ETHNICITY",
-        "RELTOJUNCT",
-        "TRAFFLOW",
-        "RDLANES",
-        "INITLANE",
-        "SURFTYPE",
-        "SURFCOND",
-        "ALIGNMENT",
-        "PROFILE",
-        "LINERIGHT",
-        "LINELEFT",
-        "RUMBINIT",
-        "RUMBROAD",
-        "LIGHTCOND",
-        "WEATHER",
-        "TRAFFUNCT",
-        "DISTRACT",
-        "PREFHE",
-        "PREMOVE",
-        "CRITCAT"
+        "VIN"
       ]
     }
   },
@@ -396,7 +369,6 @@
     "schema_links": {
       "OSCL": [
         "callID",
-        "origin",
         "resolDate",
         "resolTime"
       ]
@@ -416,10 +388,7 @@
     "schema_links": {
       "VPICDECODE": [
         "CASEID",
-        "PSU",
-        "CASENO",
-        "MakeId",
-        "Make"
+        "MakeId"
       ]
     }
   },
@@ -514,21 +483,19 @@
         "CAUSE3",
         "MAIS",
         "ISS",
-        "BMI"
+        "BMI",
+        "HOSPVITALTIME",
+        "HOSPPULSE"
       ]
     }
   },
   {
     "question_id": 34,
     "schema_links": {
-      "VPICDECODE": [
-        "CASEID",
-        "VEHNO"
-      ],
-      "CRASH": [
-        "CASEID",
-        "EVENTS"
-      ]
+      "EDRPOSTCRASH": [],
+      "EDRPRECRASH": [],
+      "GV": [],
+      "VPICDECODE": []
     }
   },
   {
@@ -568,8 +535,22 @@
       ],
       "OHEM": [
         "homeCity",
-        "homeTel",
-        "officeTel"
+        "homeTel"
+      ],
+      "OHTM": [],
+      "HTM1": [
+        "empID",
+        "role",
+        "LogInstanc"
+      ],
+      "HLD1": [
+        "HldCode",
+        "StrDate"
+      ],
+      "AHE6": [
+        "empID",
+        "line",
+        "roleID"
       ]
     }
   },
@@ -598,23 +579,39 @@
       "OVPM": [
         "DocEntry",
         "DocNum",
-        "CashAcct",
-        "CheckAcct"
+        "CashAcct"
       ]
     }
   },
   {
     "question_id": 42,
     "schema_links": {
-      "AOCR": [
-        "Locked",
-        "Active",
-        "updateDate"
+      "AOC1": [
+        "ValidFrom",
+        "ValidTo"
       ],
-      "OOCR": [
-        "UserSign",
-        "updateDate"
-      ]
+      "APRC": [],
+      "OOCR": [],
+      "ACEM": [],
+      "OCEM": [],
+      "AOPR": [
+        "CloseDate"
+      ],
+      "OOPR": [
+        "CloseDate"
+      ],
+      "OCMT": [],
+      "OOST": [
+        "StepId"
+      ],
+      "OPR1": [
+        "CloseDate"
+      ],
+      "OOND": [],
+      "OPR2": [],
+      "OPR3": [],
+      "OPR4": [],
+      "OPR5": []
     }
   },
   {
@@ -622,33 +619,52 @@
     "schema_links": {
       "tblFieldDataTurtleMeasurements": [],
       "Observer_LU": [],
-      "tblFieldDataTurtleTrapSurveys": []
+      "tblFieldDataMinnowTrapSurveys": [],
+      "tblFieldDataTurtleTrapSurveys": [],
+      "tblAbundance_LU": [],
+      "tblCultivation_LU": [],
+      "tblEventDataHerps": [],
+      "tblEvents": [],
+      "tblFieldDataAmphibianCallCounts": [],
+      "tblFieldDataCoverBoard": [],
+      "tblFieldDataGreenCardObservations": [],
+      "tblFieldDataSnakeDataCollection": [],
+      "tblFieldDataTimeConstrainedSearches": [],
+      "tblFieldDataWaterProperties": [],
+      "tblLocations": [],
+      "tblLocationsPoints": [],
+      "tblNativity_LU": [],
+      "tblParkStatus_LU": [],
+      "tblResidency_LU": [],
+      "tlinkObservers": [],
+      "tluBehavior": [],
+      "tluCallIndex": [],
+      "tluCaptureMethod": [],
+      "tluEggMassStages": [],
+      "tluEvidenceCode": [],
+      "tluHabitat": [],
+      "tluMicroHabitat": [],
+      "tluParkCode": [],
+      "tluProject": [],
+      "tluSampleZone": [],
+      "tluSpecies": [],
+      "tluStage": [],
+      "tluSubstrate": [],
+      "tluWeather": [],
+      "tluWindSpeed": [],
+      "sysdiagrams": []
     }
   },
   {
     "question_id": 44,
     "schema_links": {
-      "INJURY": [
-        "CASEID",
-        "PSU",
-        "CASENO",
-        "CASENUMBER",
-        "CATEGORY",
-        "VEHNO",
-        "OCCNO",
-        "INJNO"
-      ],
-      "LOCALIZER": []
+      "INJURY": []
     }
   },
   {
     "question_id": 45,
     "schema_links": {
       "tbl_Tree_Tags": [
-        "Location_ID",
-        "Tag",
-        "oldPlot",
-        "Module",
         "Xcoord",
         "Ycoord",
         "SpCode"
@@ -662,12 +678,8 @@
         "Witness_SpCode",
         "Witness_DBH"
       ],
-      "tlu_PlantSpecies": [
-        "genus",
-        "subgenus",
-        "species",
-        "CommonName"
-      ]
+      "tbl_Events": [],
+      "tlu_PlantSpecies": []
     }
   },
   {
@@ -693,10 +705,8 @@
   {
     "question_id": 49,
     "schema_links": {
-      "OFLT": [
-        "FormNum",
-        "QueryStr"
-      ]
+      "SEL1": [],
+      "TRB5": []
     }
   },
   {
@@ -713,6 +723,7 @@
     "schema_links": {
       "Accountability_Status": [
         "ENTITY_CD",
+        "ENTITY_NAME",
         "YEAR",
         "OVERALL_STATUS"
       ],
@@ -736,11 +747,11 @@
     "schema_links": {
       "tblFieldDataSnakeDataCollection": [
         "Weight",
-        "Sex"
+        "SVL"
       ],
       "tblFieldDataTurtleMeasurements": [
         "Weight",
-        "Sex"
+        "Carapace_Length"
       ],
       "tblFieldDataTimeConstrainedSearches": [],
       "tblFieldDataCoverBoard": [],
@@ -760,6 +771,7 @@
       "tluMicroHabitat": [],
       "tluParkCode": [],
       "tluProject": [],
+      "tluSampleZone": [],
       "tluSpecies": [],
       "tluStage": [],
       "tluSubstrate": [],
@@ -790,10 +802,7 @@
         "GLAZTYPE",
         "GLAZPRE",
         "GLAZIMP",
-        "GLAZOCC",
-        "CASEWGT",
-        "PSUSTRAT",
-        "VERSION"
+        "GLAZOCC"
       ]
     }
   },
@@ -817,8 +826,7 @@
     "schema_links": {
       "tbl_Overstory": [
         "SpCode",
-        "CanPos",
-        "SSMA_TimeStamp"
+        "CanPos"
       ],
       "tlu_PlantSpecies": [
         "CommonName"
@@ -863,9 +871,6 @@
         "Observation_ID",
         "Event_ID",
         "Sort_Order"
-      ],
-      "tbl_Event_Details": [
-        "Event_ID"
       ]
     }
   },
@@ -874,8 +879,7 @@
     "schema_links": {
       "ACC_HS_Chronic_Absenteeism": [
         "YEAR",
-        "SUBGROUP_NAME",
-        "ABSENT_RATE"
+        "SUBGROUP_NAME"
       ]
     }
   },
@@ -904,7 +908,10 @@
         "CASENO",
         "CASENUMBER",
         "CATEGORY",
-        "VEHNO"
+        "VEHNO",
+        "CASEWGT",
+        "PSUSTRAT",
+        "VERSION"
       ]
     }
   },
@@ -984,24 +991,11 @@
     "schema_links": {
       "Inexperienced_Teachers_and_Principals": [
         "ENTITY_CD",
+        "ENTITY_NAME",
         "YEAR",
         "NUM_TEACH",
-        "PER_TEACH_INEXP",
-        "TOT_TEACH_LOW",
-        "NUM_TEACH_LOW",
-        "PER_TEACH_LOW",
-        "TOT_TEACH_HIGH",
-        "NUM_TEACH_HIGH",
-        "PER_TEACH_HIGH",
-        "NUM_PRINC",
-        "NUM_PRINC_INEXP",
-        "PER_PRINC_INEXP",
-        "TOT_PRINC_LOW",
-        "NUM_PRINC_LOW",
-        "PER_PRINC_LOW",
-        "TOT_PRINC_HIGH",
-        "NUM_PRINC_HIGH",
-        "PER_PRINC_HIGH"
+        "NUM_TEACH_INEXP",
+        "PER_TEACH_INEXP"
       ]
     }
   },
@@ -1061,12 +1055,7 @@
     "schema_links": {
       "tbl_Locations": [
         "Location_ID",
-        "Site_ID",
-        "Loc_Name",
         "Random_Selected"
-      ],
-      "tbl_Event_Details": [
-        "Event_ID"
       ]
     }
   },
@@ -1088,6 +1077,9 @@
     "schema_links": {
       "AHEM": [
         "jobTitle"
+      ],
+      "OHLD": [
+        "HldCode"
       ]
     }
   },
@@ -1099,17 +1091,39 @@
         "PSU",
         "CASENO",
         "CASENUMBER",
-        "CATEGORY",
-        "VEHNO",
-        "TIRESIZE"
+        "TIRELOC",
+        "TIREMANUF",
+        "TIREMODEL",
+        "TIRESIZE",
+        "TIRETIN",
+        "TIRETREAD",
+        "TIRERESTR",
+        "TIRESIZETYPE"
       ],
       "VEHSPEC": [
         "CASEID",
         "PSU",
         "CASENO",
         "CASENUMBER",
+        "CATEGORY",
         "VEHNO",
-        "MAXWIDTH"
+        "WHEELBASE",
+        "OAL",
+        "MAXWIDTH",
+        "CURBWT",
+        "TRACKWIDTH",
+        "OVERHANG_FRT",
+        "OVERHANG_REAR",
+        "UEW",
+        "ENG_CYL",
+        "ENG_DISP",
+        "TRANSMISSION",
+        "DRVWHEELS",
+        "ALTVEH",
+        "SUSPMODS",
+        "CASEWGT",
+        "PSUSTRAT",
+        "VERSION"
       ]
     }
   },
@@ -1181,7 +1195,7 @@
     "schema_links": {
       "tbl_Sites": [
         "Site_ID",
-        "GIS_Location_ID"
+        "Site_Name"
       ],
       "tbl_Locations": [
         "Location_ID"
@@ -1219,14 +1233,10 @@
     "question_id": 94,
     "schema_links": {
       "tbl_Nests": [
-        "Presence_First",
-        "Module"
+        "Event_ID",
+        "Presence_First"
       ],
-      "tlu_PlantSpecies": [],
-      "tlu_Can_Pos": [],
-      "tlu_Presence": [
-        "Pres_Num"
-      ]
+      "tlu_PlantSpecies": []
     }
   },
   {
@@ -1242,9 +1252,6 @@
   {
     "question_id": 96,
     "schema_links": {
-      "Breeding_Codes": [
-        "Definition"
-      ],
       "Code": [
         "Field1",
         "Field2"
@@ -1267,12 +1274,12 @@
     "question_id": 98,
     "schema_links": {
       "AHEM": [
-        "firstName",
-        "lastName"
+        "lastName",
+        "firstName"
       ],
       "OHEM": [
-        "firstName",
-        "lastName"
+        "lastName",
+        "firstName"
       ]
     }
   },
@@ -1283,16 +1290,77 @@
         "Step_Id",
         "ClosePrcnt"
       ],
-      "AOPR": [],
-      "OPR5": [
-        "Line",
-        "ReasondId"
+      "AOPR": [
+        "OpenDate",
+        "MaxSumLoc",
+        "MaxSumSys",
+        "Memo",
+        "Status",
+        "WtSumLoc",
+        "WtSumSys",
+        "UserSign",
+        "ChnCrdCode",
+        "ChnCrdName",
+        "ChnCrdCon",
+        "DocChkbox",
+        "Owner",
+        "EncryptIV"
       ],
-      "OPR4": [
-        "IntId"
+      "OOPR": [
+        "OpenDate",
+        "MaxSumLoc",
+        "MaxSumSys",
+        "Memo",
+        "Status",
+        "StatusRem",
+        "Reason",
+        "RealSumLoc",
+        "RealSumSys",
+        "CloPrcnt",
+        "StepLast",
+        "UserSign",
+        "Transfered",
+        "Instance",
+        "CardName",
+        "CloseDate",
+        "LastSlp",
+        "Name",
+        "Territory",
+        "Industry",
+        "ChnCrdCode",
+        "ChnCrdName",
+        "PrjCode",
+        "CardGroup",
+        "ChnCrdCon",
+        "Owner",
+        "attachment",
+        "DocType",
+        "DocNum",
+        "DocEntry",
+        "DocChkbox",
+        "AtcEntry",
+        "LogInstanc",
+        "UserSign2",
+        "UpdateDate",
+        "OpprType",
+        "UpdateTS",
+        "DPPStatus",
+        "CreateDate",
+        "EncryptIV"
       ],
-      "OPR3": [
-        "CompetId"
+      "AOCR": [
+        "OcrCode",
+        "OcrName",
+        "OcrTotal",
+        "Direct",
+        "Locked",
+        "DataSource",
+        "Active",
+        "logInstanc",
+        "UserSign",
+        "DimCode",
+        "AbsEntry",
+        "IsFixedAmt"
       ]
     }
   },
@@ -1305,12 +1373,9 @@
         "Long_final"
       ],
       "tlu_Species": [
-        "Species_ID",
         "Common_Name"
       ],
       "tbl_Observations": [
-        "Observation_ID",
-        "Event_ID",
         "Species_ID"
       ]
     }
