@@ -96,34 +96,39 @@ SAP_SYNTHETIC = [
     },
     {
         "db_id": "SBODemoUS-Reports",
-        "question": "What are the report names and their authors?",
-        "schema_links": {"SRT2": ["DocName", "Author"]}
+        "question": "What are the report document names and their authors?",
+        "schema_links": {"RDOC": ["DocName", "Author"]}
     },
     {
         "db_id": "SBODemoUS-Reports",
-        "question": "Show documents that have email conversion enabled.",
-        "schema_links": {"SRT2": ["DocCode", "DocName", "SwpInEmail"]}
+        "question": "Show report documents that require email font conversion.",
+        "schema_links": {"RDOC": ["DocCode", "DocName", "SwpInEmail", "EmailFont"]}
     },
     {
         "db_id": "SBODemoUS-Reports",
         "question": "List report documents with their extension error action and number of repetitive areas.",
-        "schema_links": {"SRT2": ["DocCode", "ExtOnErr", "NumRepArs"]}
+        "schema_links": {"RDOC": ["DocCode", "DocName", "ExtOnErr", "NumRepArs"]}
     },
     {
         "db_id": "SBODemoUS-Reports",
         "question": "Show all query authorization groups and their codes.",
         "schema_links": {"OQAG": ["AUTHGRPID", "AUTHGRPCD", "AUTHGRPN"]}
     },
+    {
+        "db_id": "SBODemoUS-Reports",
+        "question": "List all queries with their category and query string.",
+        "schema_links": {"OUQR": ["QName", "QCategory", "QString"]}
+    },
     # SBODemoUS-Service
     {
         "db_id": "SBODemoUS-Service",
-        "question": "List all service contract IDs and their start and end dates.",
-        "schema_links": {"OCTR": ["ContractID", "StartDate", "EndDate"]}
+        "question": "List all service contract IDs with customer name and status.",
+        "schema_links": {"OCTR": ["ContractID", "CstmrName", "Status"]}
     },
     {
         "db_id": "SBODemoUS-Service",
-        "question": "Show the customer code and status for each service call.",
-        "schema_links": {"OSCL": ["callID", "CustCode", "Status"]}
+        "question": "Show the customer name and subject for each service call.",
+        "schema_links": {"OSCL": ["callID", "custmrName", "subject"]}
     },
     {
         "db_id": "SBODemoUS-Service",
@@ -132,8 +137,8 @@ SAP_SYNTHETIC = [
     },
     {
         "db_id": "SBODemoUS-Service",
-        "question": "Show the queue name and manager for each service queue.",
-        "schema_links": {"OQUT": ["QueueID", "QueueName", "Manager"]}
+        "question": "Show the queue description and manager for each service queue.",
+        "schema_links": {"OQUE": ["queueID", "descript", "manager"]}
     },
     # SBODemoUS-Finance
     {
@@ -148,35 +153,29 @@ SAP_SYNTHETIC = [
     },
     {
         "db_id": "SBODemoUS-Finance",
-        "question": "Show recurring postings with their frequency and amount.",
-        "schema_links": {"OFRC": ["Frequency", "Amount", "TransCode"]}
-    },
-    # SBODemoUS-General
-    {
-        "db_id": "SBODemoUS-General",
-        "question": "List all business partners with their names and group codes.",
-        "schema_links": {"OCRD": ["CardCode", "CardName", "GroupCode"]}
+        "question": "Show recurring transaction templates with their frequency and last posted date.",
+        "schema_links": {"ORCR": ["RcurCode", "RcurDesc", "Frequency", "LastPosted"]}
     },
     {
-        "db_id": "SBODemoUS-General",
-        "question": "Show the item codes, names, and item groups.",
-        "schema_links": {"OITM": ["ItemCode", "ItemName", "ItmsGrpCod"]}
+        "db_id": "SBODemoUS-Finance",
+        "question": "List all projects with their project code and name.",
+        "schema_links": {"OPRJ": ["PrjCode", "PrjName"]}
     },
     # SBODemoUS-Sales Opportunities
     {
         "db_id": "SBODemoUS-Sales Opportunities",
         "question": "Show the open date, close date, and closing percentage for all opportunities.",
-        "schema_links": {"OPR1": ["OpenDate", "CloseDate", "ClosPrcnt"]}
+        "schema_links": {"OPR1": ["OpenDate", "CloseDate", "ClosePrcnt"]}
     },
     {
         "db_id": "SBODemoUS-Sales Opportunities",
-        "question": "What is the weighted sum in local currency for each sales opportunity?",
-        "schema_links": {"OPR1": ["WtSumLoc", "OpprId"]}
+        "question": "What is the maximum sum in local currency for each sales opportunity?",
+        "schema_links": {"OPR1": ["MaxSumLoc", "OpprId"]}
     },
     {
         "db_id": "SBODemoUS-Sales Opportunities",
-        "question": "Show the status and gross profit for each opportunity.",
-        "schema_links": {"OPR1": ["Status", "GrosProfit", "OpprId"]}
+        "question": "Show the status and sales employee for each opportunity.",
+        "schema_links": {"OPR1": ["OpprId", "SlpCode"]}
     },
     # SBODemoUS-Banking
     {
@@ -186,19 +185,24 @@ SAP_SYNTHETIC = [
     },
     {
         "db_id": "SBODemoUS-Banking",
-        "question": "Show bank account numbers and their current balances.",
-        "schema_links": {"OACT": ["AcctCode", "CurrTotal", "AcctName"]}
+        "question": "Show checks with their account number and check date.",
+        "schema_links": {"OCHO": ["CheckKey", "AcctNum", "CheckDate"]}
     },
     # SBODemoUS-Inventory and Production
     {
         "db_id": "SBODemoUS-Inventory and Production",
-        "question": "List all warehouses with their names and locations.",
-        "schema_links": {"OWHS": ["WhsCode", "WhsName", "Street"]}
+        "question": "List all warehouses with their names.",
+        "schema_links": {"OWHS": ["WhsCode", "WhsName"]}
     },
     {
         "db_id": "SBODemoUS-Inventory and Production",
-        "question": "Show item codes, names, and their current stock quantity.",
+        "question": "Show item codes and names with their current stock quantity.",
         "schema_links": {"OITM": ["ItemCode", "ItemName", "OnHand"]}
+    },
+    {
+        "db_id": "SBODemoUS-Inventory and Production",
+        "question": "Show production orders with their planned quantity and status.",
+        "schema_links": {"OWOR": ["DocNum", "ItemCode", "PlannedQty", "Status"]}
     },
     # SBODemoUS-Business Partners
     {
@@ -218,8 +222,8 @@ SAP_SYNTHETIC = [
     },
     {
         "db_id": "SBODemoUS-Business Partners",
-        "question": "Show the target amount and sales employee for each business partner.",
-        "schema_links": {"OCRD": ["CardCode", "SlpCode", "DfltDisc"]}
+        "question": "Show the sales employee code for each business partner.",
+        "schema_links": {"OCRD": ["CardCode", "SlpCode"]}
     },
     # SBODemoUS-Human Resources (more examples for still-failing module)
     {
@@ -257,21 +261,11 @@ SAP_SYNTHETIC = [
         "question": "Show the previous employment history including employer and position for each employee.",
         "schema_links": {"HEM4": ["empID", "employer", "position", "fromDate", "toDate"]}
     },
-    # SBODemoUS-General (still failing)
+    # SBODemoUS-General (still failing — use tables that actually exist)
     {
         "db_id": "SBODemoUS-General",
-        "question": "List all business objects with their names and types.",
-        "schema_links": {"OBOB": ["BisObjType", "BisObjName"]}
-    },
-    {
-        "db_id": "SBODemoUS-General",
-        "question": "Show all users with their first name, last name, and email.",
-        "schema_links": {"OUSR": ["USERID", "U_NAME", "E_Mail"]}
-    },
-    {
-        "db_id": "SBODemoUS-General",
-        "question": "What are the form names and their descriptions in the system?",
-        "schema_links": {"OCFM": ["FormID", "Name"]}
+        "question": "List all business objects with their table name and primary key.",
+        "schema_links": {"OBOB": ["ObjectId", "TableName", "PrimaryKey"]}
     },
     # SBODemoUS-Reports (still failing)
     {
@@ -281,61 +275,36 @@ SAP_SYNTHETIC = [
     },
     {
         "db_id": "SBODemoUS-Reports",
-        "question": "List report documents that use email font conversion.",
-        "schema_links": {"SRT2": ["DocCode", "DocName", "EmailFont", "SwpInEmail"]}
-    },
-    {
-        "db_id": "SBODemoUS-Reports",
-        "question": "Show the report wizard ID, card code, and payment number for each document.",
-        "schema_links": {"RDOC": ["WizardId", "CardCode", "PmntNum"]}
+        "question": "Show the document code, author, and category for each report.",
+        "schema_links": {"RDOC": ["DocCode", "Author", "Category"]}
     },
     # SBODemoUS-Sales Opportunities (still failing)
     {
         "db_id": "SBODemoUS-Sales Opportunities",
-        "question": "Show all opportunity stages with their name and closing percentage.",
-        "schema_links": {"OOST": ["Num", "Name", "ClsPrcnt"]}
+        "question": "Show all opportunity stages with their description and step ID.",
+        "schema_links": {"OOST": ["Num", "Descript", "StepId"]}
     },
     {
         "db_id": "SBODemoUS-Sales Opportunities",
-        "question": "List sales opportunities with their predicted closing date and sales employee.",
-        "schema_links": {"OPR1": ["OpprId", "CloseDate", "SlpCode"]}
-    },
-    {
-        "db_id": "SBODemoUS-Sales Opportunities",
-        "question": "What is the total amount and currency for each sales opportunity?",
-        "schema_links": {"OPR1": ["OpprId", "MaxSumLoc", "DocCurr"]}
+        "question": "What is the maximum sum in system currency for each sales opportunity?",
+        "schema_links": {"OPR1": ["OpprId", "MaxSumSys"]}
     },
     # SBODemoUS-Inventory and Production (still failing)
     {
         "db_id": "SBODemoUS-Inventory and Production",
-        "question": "Show all production orders with their planned quantity and status.",
-        "schema_links": {"OWOR": ["DocNum", "PlannedQty", "Status"]}
-    },
-    {
-        "db_id": "SBODemoUS-Inventory and Production",
-        "question": "List items with their unit of measure and price.",
+        "question": "List items with their unit of measure and last purchase price.",
         "schema_links": {"OITM": ["ItemCode", "ItemName", "SalUnitMsr", "LastPurPrc"]}
     },
-    {
-        "db_id": "SBODemoUS-Inventory and Production",
-        "question": "Show goods receipt documents with their posting date and total amount.",
-        "schema_links": {"OPDN": ["DocNum", "DocDate", "DocTotal"]}
-    },
-    # SBODemoUS-Finance (more examples)
+    # SBODemoUS-Finance (more examples using real tables)
     {
         "db_id": "SBODemoUS-Finance",
-        "question": "Show all chart of accounts with account name and account type.",
-        "schema_links": {"OACT": ["AcctCode", "AcctName", "ActType"]}
+        "question": "Show all chart of accounts with account name and current total.",
+        "schema_links": {"OACT": ["AcctCode", "AcctName", "CurrTotal"]}
     },
     {
         "db_id": "SBODemoUS-Finance",
-        "question": "List all open invoices with customer code and due date.",
-        "schema_links": {"OINV": ["DocNum", "CardCode", "DocDueDate", "DocTotal"]}
-    },
-    {
-        "db_id": "SBODemoUS-Finance",
-        "question": "Show journal entries with their debit and credit amounts.",
-        "schema_links": {"JDT1": ["TransId", "Debit", "Credit", "Account"]}
+        "question": "Show journal entries with their transaction ID and memo.",
+        "schema_links": {"OJDT": ["TransId", "Memo", "RefDate"]}
     },
     # SBODemoUS-Banking (more examples)
     {
@@ -343,21 +312,11 @@ SAP_SYNTHETIC = [
         "question": "List all outgoing payments with vendor code and payment date.",
         "schema_links": {"OVPM": ["DocNum", "CardCode", "DocDate", "DocTotal"]}
     },
-    {
-        "db_id": "SBODemoUS-Banking",
-        "question": "Show checks with their account number and check amount.",
-        "schema_links": {"OCHO": ["CheckKey", "AcctNum", "CheckSum"]}
-    },
-    # SBODemoUS-Service (more examples)
+    # SBODemoUS-Service (more examples using real columns)
     {
         "db_id": "SBODemoUS-Service",
-        "question": "List service calls with their priority and assigned technician.",
-        "schema_links": {"OSCL": ["callID", "Priority", "technician"]}
-    },
-    {
-        "db_id": "SBODemoUS-Service",
-        "question": "Show all service contracts and their contract type.",
-        "schema_links": {"OCTR": ["ContractID", "ContractType", "Status"]}
+        "question": "Show all service contracts and their template and renewal status.",
+        "schema_links": {"OCTR": ["ContractID", "CntrcTmplt", "Renewal"]}
     },
 ]
 

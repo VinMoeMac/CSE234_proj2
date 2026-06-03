@@ -4773,9 +4773,9 @@
   },
   {
     "db_id": "SBODemoUS-Reports",
-    "question": "What are the report names and their authors?",
+    "question": "What are the report document names and their authors?",
     "schema_links": {
-      "SRT2": [
+      "RDOC": [
         "DocName",
         "Author"
       ]
@@ -4785,12 +4785,13 @@
   },
   {
     "db_id": "SBODemoUS-Reports",
-    "question": "Show documents that have email conversion enabled.",
+    "question": "Show report documents that require email font conversion.",
     "schema_links": {
-      "SRT2": [
+      "RDOC": [
         "DocCode",
         "DocName",
-        "SwpInEmail"
+        "SwpInEmail",
+        "EmailFont"
       ]
     },
     "question_id": 9018,
@@ -4800,8 +4801,9 @@
     "db_id": "SBODemoUS-Reports",
     "question": "List report documents with their extension error action and number of repetitive areas.",
     "schema_links": {
-      "SRT2": [
+      "RDOC": [
         "DocCode",
+        "DocName",
         "ExtOnErr",
         "NumRepArs"
       ]
@@ -4823,13 +4825,13 @@
     "gold_sql": ""
   },
   {
-    "db_id": "SBODemoUS-Service",
-    "question": "List all service contract IDs and their start and end dates.",
+    "db_id": "SBODemoUS-Reports",
+    "question": "List all queries with their category and query string.",
     "schema_links": {
-      "OCTR": [
-        "ContractID",
-        "StartDate",
-        "EndDate"
+      "OUQR": [
+        "QName",
+        "QCategory",
+        "QString"
       ]
     },
     "question_id": 9021,
@@ -4837,15 +4839,28 @@
   },
   {
     "db_id": "SBODemoUS-Service",
-    "question": "Show the customer code and status for each service call.",
+    "question": "List all service contract IDs with customer name and status.",
     "schema_links": {
-      "OSCL": [
-        "callID",
-        "CustCode",
+      "OCTR": [
+        "ContractID",
+        "CstmrName",
         "Status"
       ]
     },
     "question_id": 9022,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-Service",
+    "question": "Show the customer name and subject for each service call.",
+    "schema_links": {
+      "OSCL": [
+        "callID",
+        "custmrName",
+        "subject"
+      ]
+    },
+    "question_id": 9023,
     "gold_sql": ""
   },
   {
@@ -4856,20 +4871,20 @@
         "ContractID"
       ]
     },
-    "question_id": 9023,
+    "question_id": 9024,
     "gold_sql": ""
   },
   {
     "db_id": "SBODemoUS-Service",
-    "question": "Show the queue name and manager for each service queue.",
+    "question": "Show the queue description and manager for each service queue.",
     "schema_links": {
-      "OQUT": [
-        "QueueID",
-        "QueueName",
-        "Manager"
+      "OQUE": [
+        "queueID",
+        "descript",
+        "manager"
       ]
     },
-    "question_id": 9024,
+    "question_id": 9025,
     "gold_sql": ""
   },
   {
@@ -4881,7 +4896,7 @@
         "RefDate"
       ]
     },
-    "question_id": 9025,
+    "question_id": 9026,
     "gold_sql": ""
   },
   {
@@ -4893,43 +4908,30 @@
         "CurrTotal"
       ]
     },
-    "question_id": 9026,
-    "gold_sql": ""
-  },
-  {
-    "db_id": "SBODemoUS-Finance",
-    "question": "Show recurring postings with their frequency and amount.",
-    "schema_links": {
-      "OFRC": [
-        "Frequency",
-        "Amount",
-        "TransCode"
-      ]
-    },
     "question_id": 9027,
     "gold_sql": ""
   },
   {
-    "db_id": "SBODemoUS-General",
-    "question": "List all business partners with their names and group codes.",
+    "db_id": "SBODemoUS-Finance",
+    "question": "Show recurring transaction templates with their frequency and last posted date.",
     "schema_links": {
-      "OCRD": [
-        "CardCode",
-        "CardName",
-        "GroupCode"
+      "ORCR": [
+        "RcurCode",
+        "RcurDesc",
+        "Frequency",
+        "LastPosted"
       ]
     },
     "question_id": 9028,
     "gold_sql": ""
   },
   {
-    "db_id": "SBODemoUS-General",
-    "question": "Show the item codes, names, and item groups.",
+    "db_id": "SBODemoUS-Finance",
+    "question": "List all projects with their project code and name.",
     "schema_links": {
-      "OITM": [
-        "ItemCode",
-        "ItemName",
-        "ItmsGrpCod"
+      "OPRJ": [
+        "PrjCode",
+        "PrjName"
       ]
     },
     "question_id": 9029,
@@ -4942,7 +4944,7 @@
       "OPR1": [
         "OpenDate",
         "CloseDate",
-        "ClosPrcnt"
+        "ClosePrcnt"
       ]
     },
     "question_id": 9030,
@@ -4950,10 +4952,10 @@
   },
   {
     "db_id": "SBODemoUS-Sales Opportunities",
-    "question": "What is the weighted sum in local currency for each sales opportunity?",
+    "question": "What is the maximum sum in local currency for each sales opportunity?",
     "schema_links": {
       "OPR1": [
-        "WtSumLoc",
+        "MaxSumLoc",
         "OpprId"
       ]
     },
@@ -4962,12 +4964,11 @@
   },
   {
     "db_id": "SBODemoUS-Sales Opportunities",
-    "question": "Show the status and gross profit for each opportunity.",
+    "question": "Show the status and sales employee for each opportunity.",
     "schema_links": {
       "OPR1": [
-        "Status",
-        "GrosProfit",
-        "OpprId"
+        "OpprId",
+        "SlpCode"
       ]
     },
     "question_id": 9032,
@@ -4988,12 +4989,12 @@
   },
   {
     "db_id": "SBODemoUS-Banking",
-    "question": "Show bank account numbers and their current balances.",
+    "question": "Show checks with their account number and check date.",
     "schema_links": {
-      "OACT": [
-        "AcctCode",
-        "CurrTotal",
-        "AcctName"
+      "OCHO": [
+        "CheckKey",
+        "AcctNum",
+        "CheckDate"
       ]
     },
     "question_id": 9034,
@@ -5001,12 +5002,11 @@
   },
   {
     "db_id": "SBODemoUS-Inventory and Production",
-    "question": "List all warehouses with their names and locations.",
+    "question": "List all warehouses with their names.",
     "schema_links": {
       "OWHS": [
         "WhsCode",
-        "WhsName",
-        "Street"
+        "WhsName"
       ]
     },
     "question_id": 9035,
@@ -5014,7 +5014,7 @@
   },
   {
     "db_id": "SBODemoUS-Inventory and Production",
-    "question": "Show item codes, names, and their current stock quantity.",
+    "question": "Show item codes and names with their current stock quantity.",
     "schema_links": {
       "OITM": [
         "ItemCode",
@@ -5026,6 +5026,20 @@
     "gold_sql": ""
   },
   {
+    "db_id": "SBODemoUS-Inventory and Production",
+    "question": "Show production orders with their planned quantity and status.",
+    "schema_links": {
+      "OWOR": [
+        "DocNum",
+        "ItemCode",
+        "PlannedQty",
+        "Status"
+      ]
+    },
+    "question_id": 9037,
+    "gold_sql": ""
+  },
+  {
     "db_id": "SBODemoUS-Business Partners",
     "question": "Show all sales employees and their names.",
     "schema_links": {
@@ -5034,7 +5048,7 @@
         "SlpName"
       ]
     },
-    "question_id": 9037,
+    "question_id": 9038,
     "gold_sql": ""
   },
   {
@@ -5047,7 +5061,7 @@
         "Balance"
       ]
     },
-    "question_id": 9038,
+    "question_id": 9039,
     "gold_sql": ""
   },
   {
@@ -5061,20 +5075,19 @@
         "E_Mail"
       ]
     },
-    "question_id": 9039,
+    "question_id": 9040,
     "gold_sql": ""
   },
   {
     "db_id": "SBODemoUS-Business Partners",
-    "question": "Show the target amount and sales employee for each business partner.",
+    "question": "Show the sales employee code for each business partner.",
     "schema_links": {
       "OCRD": [
         "CardCode",
-        "SlpCode",
-        "DfltDisc"
+        "SlpCode"
       ]
     },
-    "question_id": 9040,
+    "question_id": 9041,
     "gold_sql": ""
   },
   {
@@ -5086,7 +5099,7 @@
         "roleID"
       ]
     },
-    "question_id": 9041,
+    "question_id": 9042,
     "gold_sql": ""
   },
   {
@@ -5099,7 +5112,7 @@
         "nChildren"
       ]
     },
-    "question_id": 9042,
+    "question_id": 9043,
     "gold_sql": ""
   },
   {
@@ -5112,7 +5125,7 @@
         "passportNo"
       ]
     },
-    "question_id": 9043,
+    "question_id": 9044,
     "gold_sql": ""
   },
   {
@@ -5126,7 +5139,7 @@
         "reviewDesc"
       ]
     },
-    "question_id": 9044,
+    "question_id": 9045,
     "gold_sql": ""
   },
   {
@@ -5141,7 +5154,7 @@
         "toDate"
       ]
     },
-    "question_id": 9045,
+    "question_id": 9046,
     "gold_sql": ""
   },
   {
@@ -5155,7 +5168,7 @@
         "salary"
       ]
     },
-    "question_id": 9046,
+    "question_id": 9047,
     "gold_sql": ""
   },
   {
@@ -5170,44 +5183,20 @@
         "toDate"
       ]
     },
-    "question_id": 9047,
-    "gold_sql": ""
-  },
-  {
-    "db_id": "SBODemoUS-General",
-    "question": "List all business objects with their names and types.",
-    "schema_links": {
-      "OBOB": [
-        "BisObjType",
-        "BisObjName"
-      ]
-    },
     "question_id": 9048,
     "gold_sql": ""
   },
   {
     "db_id": "SBODemoUS-General",
-    "question": "Show all users with their first name, last name, and email.",
+    "question": "List all business objects with their table name and primary key.",
     "schema_links": {
-      "OUSR": [
-        "USERID",
-        "U_NAME",
-        "E_Mail"
+      "OBOB": [
+        "ObjectId",
+        "TableName",
+        "PrimaryKey"
       ]
     },
     "question_id": 9049,
-    "gold_sql": ""
-  },
-  {
-    "db_id": "SBODemoUS-General",
-    "question": "What are the form names and their descriptions in the system?",
-    "schema_links": {
-      "OCFM": [
-        "FormID",
-        "Name"
-      ]
-    },
-    "question_id": 9050,
     "gold_sql": ""
   },
   {
@@ -5220,91 +5209,50 @@
         "QLastDate"
       ]
     },
-    "question_id": 9051,
+    "question_id": 9050,
     "gold_sql": ""
   },
   {
     "db_id": "SBODemoUS-Reports",
-    "question": "List report documents that use email font conversion.",
+    "question": "Show the document code, author, and category for each report.",
     "schema_links": {
-      "SRT2": [
+      "RDOC": [
         "DocCode",
-        "DocName",
-        "EmailFont",
-        "SwpInEmail"
+        "Author",
+        "Category"
+      ]
+    },
+    "question_id": 9051,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-Sales Opportunities",
+    "question": "Show all opportunity stages with their description and step ID.",
+    "schema_links": {
+      "OOST": [
+        "Num",
+        "Descript",
+        "StepId"
       ]
     },
     "question_id": 9052,
     "gold_sql": ""
   },
   {
-    "db_id": "SBODemoUS-Reports",
-    "question": "Show the report wizard ID, card code, and payment number for each document.",
+    "db_id": "SBODemoUS-Sales Opportunities",
+    "question": "What is the maximum sum in system currency for each sales opportunity?",
     "schema_links": {
-      "RDOC": [
-        "WizardId",
-        "CardCode",
-        "PmntNum"
+      "OPR1": [
+        "OpprId",
+        "MaxSumSys"
       ]
     },
     "question_id": 9053,
     "gold_sql": ""
   },
   {
-    "db_id": "SBODemoUS-Sales Opportunities",
-    "question": "Show all opportunity stages with their name and closing percentage.",
-    "schema_links": {
-      "OOST": [
-        "Num",
-        "Name",
-        "ClsPrcnt"
-      ]
-    },
-    "question_id": 9054,
-    "gold_sql": ""
-  },
-  {
-    "db_id": "SBODemoUS-Sales Opportunities",
-    "question": "List sales opportunities with their predicted closing date and sales employee.",
-    "schema_links": {
-      "OPR1": [
-        "OpprId",
-        "CloseDate",
-        "SlpCode"
-      ]
-    },
-    "question_id": 9055,
-    "gold_sql": ""
-  },
-  {
-    "db_id": "SBODemoUS-Sales Opportunities",
-    "question": "What is the total amount and currency for each sales opportunity?",
-    "schema_links": {
-      "OPR1": [
-        "OpprId",
-        "MaxSumLoc",
-        "DocCurr"
-      ]
-    },
-    "question_id": 9056,
-    "gold_sql": ""
-  },
-  {
     "db_id": "SBODemoUS-Inventory and Production",
-    "question": "Show all production orders with their planned quantity and status.",
-    "schema_links": {
-      "OWOR": [
-        "DocNum",
-        "PlannedQty",
-        "Status"
-      ]
-    },
-    "question_id": 9057,
-    "gold_sql": ""
-  },
-  {
-    "db_id": "SBODemoUS-Inventory and Production",
-    "question": "List items with their unit of measure and price.",
+    "question": "List items with their unit of measure and last purchase price.",
     "schema_links": {
       "OITM": [
         "ItemCode",
@@ -5313,61 +5261,33 @@
         "LastPurPrc"
       ]
     },
-    "question_id": 9058,
-    "gold_sql": ""
-  },
-  {
-    "db_id": "SBODemoUS-Inventory and Production",
-    "question": "Show goods receipt documents with their posting date and total amount.",
-    "schema_links": {
-      "OPDN": [
-        "DocNum",
-        "DocDate",
-        "DocTotal"
-      ]
-    },
-    "question_id": 9059,
+    "question_id": 9054,
     "gold_sql": ""
   },
   {
     "db_id": "SBODemoUS-Finance",
-    "question": "Show all chart of accounts with account name and account type.",
+    "question": "Show all chart of accounts with account name and current total.",
     "schema_links": {
       "OACT": [
         "AcctCode",
         "AcctName",
-        "ActType"
+        "CurrTotal"
       ]
     },
-    "question_id": 9060,
+    "question_id": 9055,
     "gold_sql": ""
   },
   {
     "db_id": "SBODemoUS-Finance",
-    "question": "List all open invoices with customer code and due date.",
+    "question": "Show journal entries with their transaction ID and memo.",
     "schema_links": {
-      "OINV": [
-        "DocNum",
-        "CardCode",
-        "DocDueDate",
-        "DocTotal"
-      ]
-    },
-    "question_id": 9061,
-    "gold_sql": ""
-  },
-  {
-    "db_id": "SBODemoUS-Finance",
-    "question": "Show journal entries with their debit and credit amounts.",
-    "schema_links": {
-      "JDT1": [
+      "OJDT": [
         "TransId",
-        "Debit",
-        "Credit",
-        "Account"
+        "Memo",
+        "RefDate"
       ]
     },
-    "question_id": 9062,
+    "question_id": 9056,
     "gold_sql": ""
   },
   {
@@ -5381,46 +5301,20 @@
         "DocTotal"
       ]
     },
-    "question_id": 9063,
-    "gold_sql": ""
-  },
-  {
-    "db_id": "SBODemoUS-Banking",
-    "question": "Show checks with their account number and check amount.",
-    "schema_links": {
-      "OCHO": [
-        "CheckKey",
-        "AcctNum",
-        "CheckSum"
-      ]
-    },
-    "question_id": 9064,
+    "question_id": 9057,
     "gold_sql": ""
   },
   {
     "db_id": "SBODemoUS-Service",
-    "question": "List service calls with their priority and assigned technician.",
-    "schema_links": {
-      "OSCL": [
-        "callID",
-        "Priority",
-        "technician"
-      ]
-    },
-    "question_id": 9065,
-    "gold_sql": ""
-  },
-  {
-    "db_id": "SBODemoUS-Service",
-    "question": "Show all service contracts and their contract type.",
+    "question": "Show all service contracts and their template and renewal status.",
     "schema_links": {
       "OCTR": [
         "ContractID",
-        "ContractType",
-        "Status"
+        "CntrcTmplt",
+        "Renewal"
       ]
     },
-    "question_id": 9066,
+    "question_id": 9058,
     "gold_sql": ""
   }
 ]
