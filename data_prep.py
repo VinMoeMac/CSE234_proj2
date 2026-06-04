@@ -67,6 +67,13 @@ def filter_tables(schema: dict, question: str) -> list[str]:
     return list(matched) if matched else tables
 
 
+def split_identifier(name: str) -> set[str]:
+    """Split camelCase/PascalCase/snake_case identifiers into tokens."""
+    spaced = re.sub(r"([a-z])([A-Z])", r"\1 \2", name)
+    spaced = re.sub(r"([A-Z]+)([A-Z][a-z])", r"\1 \2", spaced)
+    return set(re.sub(r"[^a-z0-9]", " ", spaced.lower()).split())
+
+
 def build_table_descriptions(train_path: str) -> dict[str, list[str]]:
     """Approach 1: derive table usage descriptions from training questions.
     Returns {db_id: {table: [question snippets that reference it]}}"""
@@ -160,14 +167,6 @@ def serialize_schema(
                 if (tb, ta) not in seen_links:
                     fk_links[tb].append(ta)
                     seen_links.add((tb, ta))
-
-    def split_identifier(name: str) -> set[str]:
-        """Split camelCase/PascalCase/snake_case identifiers into tokens."""
-        # insert space before uppercase letters preceded by lowercase
-        spaced = re.sub(r"([a-z])([A-Z])", r"\1 \2", name)
-        # insert space before sequences of uppercase followed by lowercase
-        spaced = re.sub(r"([A-Z]+)([A-Z][a-z])", r"\1 \2", spaced)
-        return set(re.sub(r"[^a-z0-9]", " ", spaced.lower()).split())
 
     # Sort tables by column relevance to question (helps cryptic table names like SAP)
     # Tables whose columns match the question come first

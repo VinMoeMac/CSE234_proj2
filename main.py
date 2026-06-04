@@ -7,7 +7,7 @@ import torch
 from peft import PeftModel
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-from data_prep import load_schema, serialize_schema, format_prompt, SYSTEM_PROMPT
+from data_prep import load_schema, serialize_schema, format_prompt, SYSTEM_PROMPT, split_identifier
 
 BASE_MODEL = "Qwen/Qwen2.5-1.5B-Instruct"
 ADAPTER_PATH = "./adapter"
@@ -279,7 +279,6 @@ def stage2_columns(
 
 def get_topk_tables(question: str, schema: dict, k: int) -> list[str]:
     """Return top-k tables scored by camelCase-split column+name overlap with question."""
-    from data_prep import split_identifier as _split  # reuse the same function
     tables = schema["table_names_original"]
     columns = schema["column_names_original"]
     q_tokens = set(re.sub(r"[^a-z0-9]", " ", question.lower()).split())
@@ -294,8 +293,8 @@ def get_topk_tables(question: str, schema: dict, k: int) -> list[str]:
     def score(t):
         col_tokens = set()
         for cn in table_col_names.get(t, []):
-            col_tokens |= _split(cn)
-        t_tokens = _split(t)
+            col_tokens |= split_identifier(cn)
+        t_tokens = split_identifier(t)
         return len((col_tokens | t_tokens) & q_tokens)
 
     return sorted(tables, key=score, reverse=True)[:k]
