@@ -35,7 +35,7 @@ def load_model(adapter_path: str):
         trust_remote_code=True,
         local_files_only=True,
     )
-    model = PeftModel.from_pretrained(base, adapter_path)
+    model = PeftModel.from_pretrained(base, adapter_path, local_files_only=True)
     model = model.to(torch.bfloat16)
     model.eval()
     return model, tokenizer
