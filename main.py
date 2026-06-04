@@ -24,7 +24,8 @@ COLUMN_SYSTEM_PROMPT = (
 
 
 def load_model(adapter_path: str):
-    tokenizer = AutoTokenizer.from_pretrained(BASE_MODEL, trust_remote_code=True)
+    tokenizer = AutoTokenizer.from_pretrained(
+        BASE_MODEL, trust_remote_code=True, local_files_only=True)
     tokenizer.padding_side = "left"
 
     base = AutoModelForCausalLM.from_pretrained(
@@ -32,6 +33,7 @@ def load_model(adapter_path: str):
         dtype=torch.bfloat16,
         device_map="auto",
         trust_remote_code=True,
+        local_files_only=True,
     )
     model = PeftModel.from_pretrained(base, adapter_path)
     model = model.to(torch.bfloat16)
