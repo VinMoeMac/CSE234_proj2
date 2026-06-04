@@ -1,0 +1,581 @@
+[
+  {
+    "db_id": "NTSB",
+    "question": "How many different vehicles are there in total?",
+    "schema_links": {
+      "GV": [
+        "CASEID",
+        "VEHNO"
+      ]
+    },
+    "question_id": 9500,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "Display a count of crashes by lighting condition.",
+    "schema_links": {
+      "GV": [
+        "CASEID",
+        "LIGHTCOND"
+      ]
+    },
+    "question_id": 9501,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "What vehicle makes and models are in the dataset?",
+    "schema_links": {
+      "GV": [
+        "VPICMAKE",
+        "VPICMODEL"
+      ]
+    },
+    "question_id": 9502,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "What is the average model year of vehicles involved in crashes?",
+    "schema_links": {
+      "GV": [
+        "CASEID",
+        "VEHNO"
+      ]
+    },
+    "question_id": 9503,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "Show the vehicle make and body class for each vehicle.",
+    "schema_links": {
+      "GV": [
+        "VPICMAKE",
+        "VPICBODYCLASS",
+        "VEHNO"
+      ]
+    },
+    "question_id": 9504,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "What road surface conditions were present during crashes?",
+    "schema_links": {
+      "GV": [
+        "CASEID",
+        "SURFCOND"
+      ]
+    },
+    "question_id": 9505,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "What is the speed limit at crash locations?",
+    "schema_links": {
+      "GV": [
+        "CASEID",
+        "SPEEDLIMIT"
+      ]
+    },
+    "question_id": 9506,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "How many crashes involved vehicles with after-market adaptive equipment?",
+    "schema_links": {
+      "ADAPT": []
+    },
+    "question_id": 9507,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "Show the adaptive equipment type for each vehicle.",
+    "schema_links": {
+      "ADAPT": [
+        "CASEID",
+        "VEHNO",
+        "ADAPT"
+      ]
+    },
+    "question_id": 9508,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "Which vehicles had adaptive equipment installed?",
+    "schema_links": {
+      "ADAPT": [
+        "CASEID",
+        "VEHNO"
+      ]
+    },
+    "question_id": 9509,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "How many crashes involved vehicles equipped with collision avoidance systems?",
+    "schema_links": {
+      "AVOID": [
+        "CASEID",
+        "EQUIP"
+      ]
+    },
+    "question_id": 9510,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "Show whether avoidance equipment was available and activated.",
+    "schema_links": {
+      "AVOID": [
+        "CASEID",
+        "EQUIP",
+        "AVAIL",
+        "ACTIVATE"
+      ]
+    },
+    "question_id": 9511,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "Which vehicles had pre-crash avoidance maneuvers?",
+    "schema_links": {
+      "AVOID": [
+        "CASEID",
+        "VEHNO",
+        "AVAIL"
+      ]
+    },
+    "question_id": 9512,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "How many events were recorded by event data recorders?",
+    "schema_links": {
+      "EDREVENT": [
+        "CASEID",
+        "EDREVENTNO"
+      ]
+    },
+    "question_id": 9513,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "What are the case IDs and event descriptions from event data recorders?",
+    "schema_links": {
+      "EDREVENT": [
+        "CASEID",
+        "EVENTDESC",
+        "EDREVENTNO"
+      ]
+    },
+    "question_id": 9514,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "Show the ignition cycle and warning lamp status at time of crash.",
+    "schema_links": {
+      "EDREVENT": [
+        "CASEID",
+        "IGCYCRASH",
+        "WARNLAMP"
+      ]
+    },
+    "question_id": 9515,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "How many injuries were caused by an unknown energy source?",
+    "schema_links": {
+      "ICS": [
+        "CASEID",
+        "SOE"
+      ]
+    },
+    "question_id": 9516,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "Show the body region index and source of energy for each injury.",
+    "schema_links": {
+      "ICS": [
+        "CASEID",
+        "BRI",
+        "SOE"
+      ]
+    },
+    "question_id": 9517,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "What is the injury coding confidence level for each occupant?",
+    "schema_links": {
+      "ICS": [
+        "CASEID",
+        "OCCNO",
+        "ICSCONFIDENCE"
+      ]
+    },
+    "question_id": 9518,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "How many vehicle occupants did not wear a seatbelt?",
+    "schema_links": {
+      "OCC": [
+        "CASEID",
+        "OCCNO",
+        "BELTUSE"
+      ]
+    },
+    "question_id": 9519,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "Show the age, sex, and seat location of each occupant.",
+    "schema_links": {
+      "OCC": [
+        "CASEID",
+        "OCCNO",
+        "AGE",
+        "SEX",
+        "SEATLOC"
+      ]
+    },
+    "question_id": 9520,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "What is the average age of vehicle occupants involved in crashes?",
+    "schema_links": {
+      "OCC": [
+        "CASEID",
+        "AGE"
+      ]
+    },
+    "question_id": 9521,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "What vehicle make has the oldest average model year?",
+    "schema_links": {
+      "VPICDECODE": [
+        "CASEID",
+        "ManufacturerFullNameId",
+        "ModelYear"
+      ]
+    },
+    "question_id": 9522,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "Show the vehicle type and manufacturer for each vehicle.",
+    "schema_links": {
+      "VPICDECODE": [
+        "CASEID",
+        "VehicleType",
+        "ManufacturerFullNameId"
+      ]
+    },
+    "question_id": 9523,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "Show the first recommended front and rear tire sizes for each vehicle.",
+    "schema_links": {
+      "TIREPLAC": [
+        "CASEID",
+        "RECFRONT1",
+        "RECREAR1"
+      ]
+    },
+    "question_id": 9524,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "What is the maximum depth of crush measured in crashes?",
+    "schema_links": {
+      "CDC": [
+        "CASEID",
+        "CMAX"
+      ]
+    },
+    "question_id": 9525,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "Show the principal direction of force for each crash event.",
+    "schema_links": {
+      "CDC": [
+        "CASEID",
+        "PDOF",
+        "EVENTNO"
+      ]
+    },
+    "question_id": 9526,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "What is the highest vehicle-to-object collision speed delta-v?",
+    "schema_links": {
+      "CDC": [
+        "CASEID",
+        "ENDSHIFT"
+      ]
+    },
+    "question_id": 9527,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "What years does this crash dataset span?",
+    "schema_links": {
+      "CRASH": [
+        "CRASHYEAR"
+      ]
+    },
+    "question_id": 9528,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "Show the number of vehicles and day of week for each crash.",
+    "schema_links": {
+      "CRASH": [
+        "CASEID",
+        "VEHICLES",
+        "DAYOFWEEK"
+      ]
+    },
+    "question_id": 9529,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "How many crashes occurred on each day of the week?",
+    "schema_links": {
+      "CRASH": [
+        "CASEID",
+        "DAYOFWEEK"
+      ]
+    },
+    "question_id": 9530,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-Banking",
+    "question": "Show all checks with their account number and check date.",
+    "schema_links": {
+      "OCHO": [
+        "CheckKey",
+        "AcctNum",
+        "CheckDate"
+      ]
+    },
+    "question_id": 9531,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-Banking",
+    "question": "List incoming payments with their document number and cash amount.",
+    "schema_links": {
+      "ORCT": [
+        "DocNum",
+        "DocDate",
+        "CashSum"
+      ]
+    },
+    "question_id": 9532,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-Banking",
+    "question": "Show outgoing payments with their vendor code and total amount.",
+    "schema_links": {
+      "OVPM": [
+        "DocNum",
+        "CardCode",
+        "DocTotal"
+      ]
+    },
+    "question_id": 9533,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-Banking",
+    "question": "What are the account numbers that have checks with more than one payment?",
+    "schema_links": {
+      "OCHO": [
+        "AcctNum",
+        "CheckKey"
+      ],
+      "CHO1": [
+        "CheckKey"
+      ]
+    },
+    "question_id": 9534,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-Banking",
+    "question": "Show payment run entries with their vendor number and payment amount.",
+    "schema_links": {
+      "OPEX": [
+        "AbsEntry",
+        "VendorNum",
+        "PymDocAmnt"
+      ]
+    },
+    "question_id": 9535,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-Sales Opportunities",
+    "question": "Show open and close dates for sales opportunities with closing percentage below 50.",
+    "schema_links": {
+      "OPR1": [
+        "OpprId",
+        "OpenDate",
+        "CloseDate",
+        "ClosePrcnt"
+      ]
+    },
+    "question_id": 9536,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-Sales Opportunities",
+    "question": "What is the weighted amount in local currency for row-level opportunity data?",
+    "schema_links": {
+      "OPR1": [
+        "OpprId",
+        "WtSumLoc"
+      ]
+    },
+    "question_id": 9537,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-Sales Opportunities",
+    "question": "Show all opportunity stages with their description.",
+    "schema_links": {
+      "OOST": [
+        "Num",
+        "Descript"
+      ]
+    },
+    "question_id": 9538,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-Sales Opportunities",
+    "question": "List sales opportunities with their sales employee and predicted close date.",
+    "schema_links": {
+      "OPR1": [
+        "OpprId",
+        "SlpCode",
+        "CloseDate"
+      ]
+    },
+    "question_id": 9539,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-Sales Opportunities",
+    "question": "How many queries are there in each category?",
+    "schema_links": {
+      "OPR1": [
+        "OpprId"
+      ]
+    },
+    "question_id": 9540,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-Business Partners",
+    "question": "Show all sales employees with their name and code.",
+    "schema_links": {
+      "OSLP": [
+        "SlpCode",
+        "SlpName"
+      ]
+    },
+    "question_id": 9541,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-Business Partners",
+    "question": "List customers with their credit limit and current balance.",
+    "schema_links": {
+      "OCRD": [
+        "CardCode",
+        "CardName",
+        "CreditLine",
+        "Balance"
+      ]
+    },
+    "question_id": 9542,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-Business Partners",
+    "question": "Show the phone number and email for each business partner.",
+    "schema_links": {
+      "OCRD": [
+        "CardCode",
+        "Phone1",
+        "E_Mail"
+      ]
+    },
+    "question_id": 9543,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-Business Partners",
+    "question": "What are the target amounts for each sales employee?",
+    "schema_links": {
+      "OSLP": [
+        "SlpCode",
+        "SlpName"
+      ]
+    },
+    "question_id": 9544,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "SBODemoUS-Business Partners",
+    "question": "Show the fax number and contact person for each business partner.",
+    "schema_links": {
+      "OCRD": [
+        "CardCode",
+        "Fax",
+        "CntctPrsn"
+      ]
+    },
+    "question_id": 9545,
+    "gold_sql": ""
+  }
+]
