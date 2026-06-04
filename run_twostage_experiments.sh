@@ -25,8 +25,8 @@ echo "$(date): Starting two-stage experiments"
 # Exp 1: original 0.425 adapter + two-stage (no camelCase mismatch)
 # ---------------------------------------------------------------
 echo ""
-echo "=== Exp 1: 0.425 adapter (augmented-fk-sorted) + two-stage ==="
-cp -r runs/augmented-fk-sorted/adapter/. adapter/
+echo "=== Exp 1: 0.425 adapter (best425) + two-stage ==="
+cp -r runs/best425/adapter/. adapter/
 python main.py --input $VAL_INPUT --output preds_ts_425.json \
     --schemas_dir $SCHEMAS --batch_size 1 --two_stage
 eval_preds "ts_425" preds_ts_425.json
