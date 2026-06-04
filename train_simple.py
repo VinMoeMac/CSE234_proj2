@@ -15,7 +15,7 @@ from trl import SFTConfig, SFTTrainer
 
 import json
 
-from data_prep import build_dataset
+from data_prep import build_dataset, build_two_stage_dataset
 
 # Databases that score poorly — oversample these
 UNDERSAMPLE_DBS = {
@@ -63,6 +63,8 @@ def main():
                     help="Approach 2: show FK relationships between tables")
     ap.add_argument("--sort_by_question", action="store_true",
                     help="Approach 3: sort columns by relevance to question")
+    ap.add_argument("--two_stage_train", action="store_true",
+                    help="Train on single-table column prediction format for two-stage inference")
     args = ap.parse_args()
 
     os.makedirs(args.output_dir, exist_ok=True)
@@ -95,20 +97,25 @@ def main():
         table_descriptions = build_table_descriptions(args.train)
         print(f"  Built table descriptions for {sum(len(v) for v in table_descriptions.values())} tables")
 
-    train_data = build_dataset(
-        args.train, args.schemas_dir,
-        filter_schema=args.filter_schema,
-        table_descriptions=table_descriptions,
-        sort_by_question=args.sort_by_question,
-        show_fk_links=args.show_fk_links,
-    )
-    val_data = build_dataset(
-        args.validation, args.schemas_dir,
-        filter_schema=args.filter_schema,
-        table_descriptions=table_descriptions,
-        sort_by_question=args.sort_by_question,
-        show_fk_links=args.show_fk_links,
-    )
+    if args.two_stage_train:
+        print("  Using two-stage column prediction format...")
+        train_data = build_two_stage_dataset(args.train, args.schemas_dir)
+        val_data = build_two_stage_dataset(args.validation, args.schemas_dir)
+    else:
+        train_data = build_dataset(
+            args.train, args.schemas_dir,
+            filter_schema=args.filter_schema,
+            table_descriptions=table_descriptions,
+            sort_by_question=args.sort_by_question,
+            show_fk_links=args.show_fk_links,
+        )
+        val_data = build_dataset(
+            args.validation, args.schemas_dir,
+            filter_schema=args.filter_schema,
+            table_descriptions=table_descriptions,
+            sort_by_question=args.sort_by_question,
+            show_fk_links=args.show_fk_links,
+        )
 
     if args.oversample_factor > 1:
         train_data = oversample(train_data, args.train, factor=args.oversample_factor)
@@ -176,7 +183,8 @@ def main():
             "use_table_desc": args.use_table_desc,
             "show_fk_links": args.show_fk_links,
             "sort_by_question": args.sort_by_question,
-            "schema_version": "v3-camelcase-split",  # data_prep.py version
+            "schema_version": "v3-camelcase-split",
+            "two_stage_train": args.two_stage_train,
             "effective_batch_size": args.batch_size * args.grad_accum,
             "train_examples": len(train_dataset),
             "val_examples": len(val_dataset),

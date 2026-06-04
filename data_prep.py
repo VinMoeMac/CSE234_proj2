@@ -220,6 +220,53 @@ def make_chat_example(question: str, db_id: str, schema_text: str, schema_links:
     }
 
 
+COLUMN_SYSTEM_PROMPT = (
+    "You are a column linking assistant. Given a natural language question and a single "
+    "database table with its columns, output a JSON list of column names that the question "
+    "references. If no specific columns are referenced (e.g. COUNT(*) or SELECT *), output "
+    "an empty list []. Output only a valid JSON array — no explanation, no extra text."
+)
+
+
+def build_two_stage_dataset(data_path: str, schemas_dir: str) -> list[dict]:
+    """Build training data for Stage 2: single-table column prediction.
+    Each training example becomes one entry per table referenced in the question."""
+    with open(data_path, "r", encoding="utf-8") as f:
+        examples = json.load(f)
+
+    dataset = []
+    for ex in examples:
+        schema = load_schema(ex["db_id"], schemas_dir)
+        table_col_map = {}
+        for tbl_idx, col_name in schema["column_names_original"]:
+            if tbl_idx == -1:
+                continue
+            t = schema["table_names_original"][tbl_idx]
+            table_col_map.setdefault(t, []).append(col_name)
+
+        for table, gold_cols in ex["schema_links"].items():
+            all_cols = table_col_map.get(table, [])
+            if not all_cols:
+                continue
+            col_list = "\n".join(f"  - {c}" for c in all_cols)
+            prompt = (
+                f"Question: {ex['question']}\n\n"
+                f"Table: {table}\n"
+                f"Columns:\n{col_list}\n\n"
+                f"Which columns from this table does the question reference? "
+                f"Output a JSON array of column names, or [] if none."
+            )
+            answer = json.dumps(gold_cols, ensure_ascii=False)
+            dataset.append({
+                "messages": [
+                    {"role": "system", "content": COLUMN_SYSTEM_PROMPT},
+                    {"role": "user", "content": prompt},
+                    {"role": "assistant", "content": answer},
+                ]
+            })
+    return dataset
+
+
 def build_dataset(
     data_path: str,
     schemas_dir: str,

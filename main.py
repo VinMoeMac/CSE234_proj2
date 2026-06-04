@@ -277,6 +277,30 @@ def stage2_columns(
     return []
 
 
+def get_topk_tables(question: str, schema: dict, k: int) -> list[str]:
+    """Return top-k tables scored by camelCase-split column+name overlap with question."""
+    from data_prep import split_identifier as _split  # reuse the same function
+    tables = schema["table_names_original"]
+    columns = schema["column_names_original"]
+    q_tokens = set(re.sub(r"[^a-z0-9]", " ", question.lower()).split())
+
+    table_col_names = {}
+    for tbl_idx, col_name in columns:
+        if tbl_idx == -1:
+            continue
+        t = tables[tbl_idx]
+        table_col_names.setdefault(t, []).append(col_name)
+
+    def score(t):
+        col_tokens = set()
+        for cn in table_col_names.get(t, []):
+            col_tokens |= _split(cn)
+        t_tokens = _split(t)
+        return len((col_tokens | t_tokens) & q_tokens)
+
+    return sorted(tables, key=score, reverse=True)[:k]
+
+
 def predict_all(
     questions: list[dict],
     schemas_dir: str,
@@ -286,6 +310,7 @@ def predict_all(
     filter_schema: bool = False,
     max_seq_len: int = 3072,
     two_stage: bool = False,
+    two_stage_topk: int = 0,
 ) -> list[dict]:
     preds = []
     total = len(questions)
@@ -311,8 +336,7 @@ def predict_all(
             if not links:
                 links = keyword_fallback(q["question"], schema)
 
-            if two_stage and links:
-                # Stage 2: refine columns for each predicted table
+            if two_stage:
                 table_col_map = {}
                 for tbl_idx, col_name in schema["column_names_original"]:
                     if tbl_idx == -1:
@@ -320,19 +344,30 @@ def predict_all(
                     t = schema["table_names_original"][tbl_idx]
                     table_col_map.setdefault(t, []).append(col_name)
 
+                # optionally add top-k keyword tables not already predicted
+                tables_to_check = list(links.keys())
+                if two_stage_topk > 0:
+                    topk = get_topk_tables(q["question"], schema, two_stage_topk)
+                    for t in topk:
+                        if t not in links:
+                            tables_to_check.append(t)
+
                 refined = {}
-                for table in links:
+                for table in tables_to_check:
                     all_cols = table_col_map.get(table, [])
                     if not all_cols:
                         refined[table] = []
                         continue
                     predicted = stage2_columns(model, tokenizer, q["question"],
                                                table, all_cols, max_seq_len=max_seq_len)
-                    # validate predicted columns against schema
                     col_lower = {c.lower(): c for c in all_cols}
                     valid = [col_lower[c.lower()] for c in predicted
                              if c.lower() in col_lower]
-                    refined[table] = valid if valid else links[table]  # fallback to stage1
+                    # only include extra tables if they have predicted columns
+                    if table in links:
+                        refined[table] = valid if valid else links[table]
+                    elif valid:
+                        refined[table] = valid
                 links = refined
 
             preds.append({"question_id": q["question_id"], "schema_links": links})
@@ -354,6 +389,8 @@ def main():
                     help="Only serialize tables matching question tokens (use on low VRAM)")
     ap.add_argument("--two_stage", action="store_true",
                     help="Two-stage inference: predict tables first, then refine columns per table")
+    ap.add_argument("--two_stage_topk", type=int, default=0,
+                    help="Also run stage2 on top-k keyword tables not predicted in stage1")
     args = ap.parse_args()
 
     with open(args.input, "r", encoding="utf-8") as f:
@@ -372,6 +409,7 @@ def main():
         filter_schema=args.filter_schema,
         max_seq_len=args.max_seq_len,
         two_stage=args.two_stage,
+        two_stage_topk=args.two_stage_topk,
     )
 
     with open(args.output, "w", encoding="utf-8") as f:
