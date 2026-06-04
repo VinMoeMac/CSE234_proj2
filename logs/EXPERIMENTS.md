@@ -96,7 +96,39 @@ Per-database breakdown at 0.398:
 
 ---
 
-## In Progress
+---
 
-- **fk-sorted-v1:** Training with both FK links and table-by-column sorting. Expected to improve SAP/NTSB by teaching model to use table ordering.
-- **Synthetic SAP data:** Generating ~60 additional NL→schema_links pairs for SAP databases using column names as semantic anchors.
+## Two-Stage Inference (MAJOR WIN)
+
+**Key insight:** The model finds correct tables but predicts wrong columns 72/101 times. Solution: after stage1 predicts tables, run a focused stage2 for each table asking "which columns from this specific table does the question reference?"
+
+Stage2 system prompt is different — simpler, single-table focused. The model sees only one table's columns at a time.
+
+**Results:**
+| Config | Score |
+|---|---|
+| camel-split-v1 + two-stage | **0.440** ← best |
+| 0.425 adapter + two-stage | 0.414 |
+| camel-split-v1 (single-stage) | 0.419 |
+| two-stage + top-k table fallback | 0.402 |
+| retrained for two-stage format | 0.277 |
+
+**Key findings:**
+- Two-stage pushed column score from 0.339 → 0.385 (+14%)
+- Adding extra tables in top-k hurts precision more than it helps recall
+- Training specifically for two-stage format catastrophically fails — the model can't handle stage1 anymore
+- The camelCase splitting during training is important — 0.425 adapter + two-stage only gets 0.414
+
+---
+
+## Final Best: 0.440
+
+**Model:** camel-split-v1 adapter (Qwen2.5-1.5B, 5ep, lr=1e-4, FK+sorting+camelCase, 59 synthetic SAP examples)
+**Inference:** Two-stage — predict tables then refine columns per table
+**Command:** `python main.py --input ... --output ... --schemas_dir ... --batch_size 1 --two_stage`
+
+Per-database at 0.440:
+- SAP databases: 0.0–0.35 (still weakest but much improved from baseline 0.0)
+- NTSB: ~0.20
+- Biodiversity/Education: 0.35–0.75
+- Best: ASIS (0.72), NorthernPlains (0.73)
