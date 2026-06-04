@@ -160,17 +160,25 @@ def augment_columns(question: str, links: dict, schema: dict) -> dict:
 
 
 def truncate_schema_text(schema_text: str, question: str, tokenizer, max_schema_tokens: int) -> str:
-    """Truncate schema lines from the bottom, keeping the most relevant tables at top."""
+    """Truncate schema lines from the bottom using binary search."""
     lines = schema_text.split("\n")
-    # keep removing lines from the end until it fits
-    while lines:
-        candidate = "\n".join(lines)
-        tokens = tokenizer(candidate, return_tensors="pt")["input_ids"].shape[1]
+    if not lines:
+        return ""
+    # fast check: does the full text fit?
+    full_tokens = len(tokenizer.encode("\n".join(lines)))
+    if full_tokens <= max_schema_tokens:
+        return schema_text
+    # binary search on number of lines to keep
+    lo, hi = 1, len(lines)
+    while lo < hi:
+        mid = (lo + hi + 1) // 2
+        candidate = "\n".join(lines[:mid])
+        tokens = len(tokenizer.encode(candidate))
         if tokens <= max_schema_tokens:
-            return candidate
-        # remove last line
-        lines = lines[:-1]
-    return ""
+            lo = mid
+        else:
+            hi = mid - 1
+    return "\n".join(lines[:lo])
 
 
 def run_batch(model, tokenizer, prompts: list[str], max_seq_len: int = 3072) -> list[str]:
