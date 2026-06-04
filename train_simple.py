@@ -65,6 +65,8 @@ def main():
                     help="Approach 3: sort columns by relevance to question")
     ap.add_argument("--two_stage_train", action="store_true",
                     help="Train on single-table column prediction format for two-stage inference")
+    ap.add_argument("--lora_all_linear", action="store_true",
+                    help="Apply LoRA to all linear layers (more expressive, more params)")
     args = ap.parse_args()
 
     os.makedirs(args.output_dir, exist_ok=True)
@@ -81,11 +83,12 @@ def main():
         use_cache=False,
     )
 
+    target_modules = "all-linear" if args.lora_all_linear else ["q_proj", "k_proj", "v_proj", "o_proj"]
     lora_config = LoraConfig(
         r=args.lora_r,
         lora_alpha=args.lora_r * 2,
         lora_dropout=0.05,
-        target_modules=["q_proj", "k_proj", "v_proj", "o_proj"],
+        target_modules=target_modules,
         bias="none",
         task_type="CAUSAL_LM",
     )
@@ -185,6 +188,7 @@ def main():
             "sort_by_question": args.sort_by_question,
             "schema_version": "v3-camelcase-split",
             "two_stage_train": args.two_stage_train,
+            "lora_all_linear": args.lora_all_linear,
             "effective_batch_size": args.batch_size * args.grad_accum,
             "train_examples": len(train_dataset),
             "val_examples": len(val_dataset),
