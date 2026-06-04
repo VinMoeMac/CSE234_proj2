@@ -252,7 +252,7 @@ def stage2_columns(
         out = model.generate(
             input_ids=inputs["input_ids"],
             attention_mask=inputs["attention_mask"],
-            max_new_tokens=128,
+            max_new_tokens=64,  # column lists are short, 64 is enough
             do_sample=False,
             pad_token_id=tokenizer.eos_token_id,
         )
@@ -398,6 +398,8 @@ def main():
     print(f"Loading model {BASE_MODEL} + adapter {args.adapter_path}...")
     model, tokenizer = load_model(args.adapter_path)
 
+    import time as _time
+    _t0 = _time.time()
     print(f"Running inference on {len(questions)} questions...")
     preds = predict_all(
         questions,
@@ -411,9 +413,11 @@ def main():
         two_stage_topk=args.two_stage_topk,
     )
 
+    elapsed = _time.time() - _t0
     with open(args.output, "w", encoding="utf-8") as f:
         json.dump(preds, f, indent=2, ensure_ascii=False)
     print(f"Wrote {len(preds)} predictions to {args.output}")
+    print(f"Inference time: {elapsed:.0f}s ({elapsed/60:.1f} min)")
 
 
 if __name__ == "__main__":
