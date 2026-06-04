@@ -201,11 +201,11 @@ def run_batch(model, tokenizer, prompts: list[str], max_seq_len: int = 3072) -> 
         [{"role": "system", "content": SYSTEM_PROMPT}, {"role": "user", "content": p}]
         for p in truncated_prompts
     ]
-    encoded = tokenizer.apply_chat_template(
-        chats,
-        tokenize=False,
-        add_generation_prompt=True,
-    )
+    # Disable thinking for Qwen3 models
+    template_kwargs = {"tokenize": False, "add_generation_prompt": True}
+    if hasattr(tokenizer, "chat_template") and tokenizer.chat_template and "enable_thinking" in str(tokenizer.chat_template):
+        template_kwargs["enable_thinking"] = False
+    encoded = tokenizer.apply_chat_template(chats, **template_kwargs)
     inputs = tokenizer(
         encoded,
         return_tensors="pt",
