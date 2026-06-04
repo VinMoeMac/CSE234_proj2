@@ -15,6 +15,13 @@ DEFAULT_SCHEMAS_DIR = "./schemas"
 MAX_NEW_TOKENS = 512
 BATCH_SIZE = 4
 
+COLUMN_SYSTEM_PROMPT = (
+    "You are a column linking assistant. Given a natural language question and a single "
+    "database table with its columns, output a JSON list of column names that the question "
+    "references. If no specific columns are referenced (e.g. COUNT(*) or SELECT *), output "
+    "an empty list []. Output only a valid JSON array — no explanation, no extra text."
+)
+
 
 def load_model(adapter_path: str):
     tokenizer = AutoTokenizer.from_pretrained(BASE_MODEL, trust_remote_code=True)
@@ -213,6 +220,53 @@ def run_batch(model, tokenizer, prompts: list[str], max_seq_len: int = 3072) -> 
     return results
 
 
+def stage2_columns(
+    model, tokenizer, question: str, table: str, col_names: list[str],
+    max_seq_len: int = 2048
+) -> list[str]:
+    """Stage 2: given predicted table, ask model which columns are referenced."""
+    col_list = "\n".join(f"  - {c}" for c in col_names)
+    prompt = (
+        f"Question: {question}\n\n"
+        f"Table: {table}\n"
+        f"Columns:\n{col_list}\n\n"
+        f"Which columns from this table does the question reference? "
+        f"Output a JSON array of column names, or [] if none."
+    )
+    chat = [{"role": "system", "content": COLUMN_SYSTEM_PROMPT},
+            {"role": "user", "content": prompt}]
+    encoded = tokenizer.apply_chat_template([chat], tokenize=False, add_generation_prompt=True)
+    inputs = tokenizer(encoded, return_tensors="pt", truncation=True,
+                       max_length=max_seq_len).to(model.device)
+    with torch.no_grad():
+        out = model.generate(
+            input_ids=inputs["input_ids"],
+            attention_mask=inputs["attention_mask"],
+            max_new_tokens=128,
+            do_sample=False,
+            pad_token_id=tokenizer.eos_token_id,
+        )
+    raw = tokenizer.decode(out[0][inputs["input_ids"].shape[1]:], skip_special_tokens=True).strip()
+
+    # parse JSON array
+    try:
+        result = json.loads(raw)
+        if isinstance(result, list):
+            return [c for c in result if isinstance(c, str)]
+    except json.JSONDecodeError:
+        pass
+    # fallback: find array in output
+    match = re.search(r"\[.*?\]", raw, re.DOTALL)
+    if match:
+        try:
+            result = json.loads(match.group(0))
+            if isinstance(result, list):
+                return [c for c in result if isinstance(c, str)]
+        except json.JSONDecodeError:
+            pass
+    return []
+
+
 def predict_all(
     questions: list[dict],
     schemas_dir: str,
@@ -221,6 +275,7 @@ def predict_all(
     batch_size: int = BATCH_SIZE,
     filter_schema: bool = False,
     max_seq_len: int = 3072,
+    two_stage: bool = False,
 ) -> list[dict]:
     preds = []
     total = len(questions)
@@ -233,8 +288,8 @@ def predict_all(
             schemas.append(schema)
             schema_text = serialize_schema(
                 schema,
-                filter_question=q["question"],  # always sort tables by relevance
-                show_fk_links=True,             # match training distribution
+                filter_question=q["question"],
+                show_fk_links=True,
             )
             prompts.append(format_prompt(q["question"], q["db_id"], schema_text))
 
@@ -245,6 +300,31 @@ def predict_all(
             links = validate_links(links, schema)
             if not links:
                 links = keyword_fallback(q["question"], schema)
+
+            if two_stage and links:
+                # Stage 2: refine columns for each predicted table
+                table_col_map = {}
+                for tbl_idx, col_name in schema["column_names_original"]:
+                    if tbl_idx == -1:
+                        continue
+                    t = schema["table_names_original"][tbl_idx]
+                    table_col_map.setdefault(t, []).append(col_name)
+
+                refined = {}
+                for table in links:
+                    all_cols = table_col_map.get(table, [])
+                    if not all_cols:
+                        refined[table] = []
+                        continue
+                    predicted = stage2_columns(model, tokenizer, q["question"],
+                                               table, all_cols, max_seq_len=max_seq_len)
+                    # validate predicted columns against schema
+                    col_lower = {c.lower(): c for c in all_cols}
+                    valid = [col_lower[c.lower()] for c in predicted
+                             if c.lower() in col_lower]
+                    refined[table] = valid if valid else links[table]  # fallback to stage1
+                links = refined
+
             preds.append({"question_id": q["question_id"], "schema_links": links})
 
         done = min(i + batch_size, total)
@@ -262,6 +342,8 @@ def main():
     ap.add_argument("--max_seq_len", type=int, default=3072)
     ap.add_argument("--filter_schema", action="store_true",
                     help="Only serialize tables matching question tokens (use on low VRAM)")
+    ap.add_argument("--two_stage", action="store_true",
+                    help="Two-stage inference: predict tables first, then refine columns per table")
     args = ap.parse_args()
 
     with open(args.input, "r", encoding="utf-8") as f:
@@ -279,6 +361,7 @@ def main():
         batch_size=args.batch_size,
         filter_schema=args.filter_schema,
         max_seq_len=args.max_seq_len,
+        two_stage=args.two_stage,
     )
 
     with open(args.output, "w", encoding="utf-8") as f:
