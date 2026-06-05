@@ -228,9 +228,11 @@ def serialize_schema(
         cols = table_cols[table]
         if table not in allowed_tables:
             continue
-        # Table description hint (only from derived keywords, not hardcoded)
+        # Table description hint
         hint = ""
-        if table_descriptions and table in table_descriptions:
+        if table in TABLE_DESCRIPTIONS:
+            hint = f"  [{TABLE_DESCRIPTIONS[table]}]"
+        elif table_descriptions and table in table_descriptions:
             keywords = table_descriptions[table]
             if keywords:
                 hint = f"  [used for: {', '.join(keywords)}]"
