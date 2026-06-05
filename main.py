@@ -351,6 +351,28 @@ def predict_all(
             if not links:
                 links = keyword_fallback(q["question"], schema)
 
+            # FK propagation: add FK-connected tables with column overlap
+            if links:
+                tables_list = schema["table_names_original"]
+                columns_list = schema["column_names_original"]
+                fk_pairs_list = schema["foreign_keys"]
+                col_to_tbl = {i: tables_list[ti] for i, (ti, _) in enumerate(columns_list) if ti >= 0}
+                q_tokens = set(re.sub(r"[^a-z0-9]", " ", q["question"].lower()).split())
+                tbl_col_tokens = {}
+                for ti, cn in columns_list:
+                    if ti < 0: continue
+                    tbl_col_tokens.setdefault(tables_list[ti], set()).update(split_identifier(cn))
+                changed = True
+                while changed:
+                    changed = False
+                    for ca, cb in fk_pairs_list:
+                        ta = col_to_tbl.get(ca); tb = col_to_tbl.get(cb)
+                        for src, dst in [(ta, tb), (tb, ta)]:
+                            if src in links and dst and dst not in links:
+                                if tbl_col_tokens.get(dst, set()) & q_tokens:
+                                    links[dst] = []
+                                    changed = True
+
             if two_stage:
                 table_col_map = {}
                 for tbl_idx, col_name in schema["column_names_original"]:
