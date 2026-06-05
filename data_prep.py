@@ -210,12 +210,13 @@ def format_prompt(question: str, db_id: str, schema_text: str) -> str:
 
 
 def make_chat_example(question: str, db_id: str, schema_text: str, schema_links: dict) -> dict:
-    answer = json.dumps(schema_links, ensure_ascii=False)
+    # Sort tables and columns for stable decoding
+    sorted_links = {t: sorted(cols) for t, cols in sorted(schema_links.items())}
+    answer = json.dumps(sorted_links, ensure_ascii=False)
     return {
         "messages": [
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": format_prompt(question, db_id, schema_text)},
-            # For Qwen3: prefix with empty think block to disable thinking
             {"role": "assistant", "content": answer},
         ]
     }
