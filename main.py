@@ -343,8 +343,8 @@ def predict_all(
         for q, schema, raw in zip(batch, schemas, raw_outputs):
             links = extract_json(raw) or {}
             links = validate_links(links, schema)
-            # keyword_fallback removed — 8% accuracy hurts precision more than it helps
-            # empty predictions score 0 which is better than wrong predictions
+            if not links:
+                links = keyword_fallback(q["question"], schema)
 
             if two_stage:
                 table_col_map = {}
