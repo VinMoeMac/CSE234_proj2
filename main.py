@@ -189,7 +189,7 @@ def truncate_schema_text(schema_text: str, question: str, tokenizer, max_schema_
     return "\n".join(lines[:lo])
 
 
-def run_batch(model, tokenizer, prompts: list[str], max_seq_len: int = 6144) -> list[str]:
+def run_batch(model, tokenizer, prompts: list[str], max_seq_len: int = 3072) -> list[str]:
     # Reserve tokens: system prompt (~300) + question (~150) + chat template (~100) + generation (~512)
     max_schema_tokens = max_seq_len - 512 - 300 - 150 - 100
 
@@ -395,7 +395,7 @@ def main():
     ap.add_argument("--schemas_dir", default=DEFAULT_SCHEMAS_DIR)
     ap.add_argument("--adapter_path", default=ADAPTER_PATH)
     ap.add_argument("--batch_size", type=int, default=BATCH_SIZE)
-    ap.add_argument("--max_seq_len", type=int, default=6144)
+    ap.add_argument("--max_seq_len", type=int, default=3072)
     ap.add_argument("--filter_schema", action="store_true",
                     help="Only serialize tables matching question tokens (use on low VRAM)")
     ap.add_argument("--two_stage", action="store_true",
