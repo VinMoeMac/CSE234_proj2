@@ -121,14 +121,22 @@ Stage2 system prompt is different — simpler, single-table focused. The model s
 
 ---
 
-## Final Best: 0.440
+## Final Best: 0.4539
 
-**Model:** camel-split-v1 adapter (Qwen2.5-1.5B, 5ep, lr=1e-4, FK+sorting+camelCase, 59 synthetic SAP examples)
-**Inference:** Two-stage — predict tables then refine columns per table
-**Command:** `python main.py --input ... --output ... --schemas_dir ... --batch_size 1 --two_stage`
+**Model:** e4-r32-lr8e5 (Qwen2.5-1.5B, r=32, lr=8e-5, 6 epochs, FK+camelCase sorting, 406 training examples)
+**Inference:** Two-stage by default — predict tables then refine columns per table
+**Command:** `python main.py --input ... --output ...` (two-stage and schemas are defaults)
+**Inference time:** 3.2 min for 101 questions on 24GB GPU
 
-Per-database at 0.440:
-- SAP databases: 0.0–0.35 (still weakest but much improved from baseline 0.0)
-- NTSB: ~0.20
-- Biodiversity/Education: 0.35–0.75
-- Best: ASIS (0.72), NorthernPlains (0.73)
+Final config knobs that mattered most:
+- LoRA r=32 (not 16, not 64) — sweet spot for 406-example dataset
+- lr=8e-5 over 6 epochs — lower LR + fewer epochs than baseline
+- Two-stage inference — column score 0.339 → 0.394 (+16%)
+- Truncation fix — left-truncation was cutting system prompt (worth +0.044)
+- 59 synthetic SAP + 46 synthetic NTSB examples
+
+Per-database at 0.4539:
+- SAP databases: 0.0–0.35 (up from 0.0 baseline)
+- NTSB: 0.205 (up from 0.129 baseline)
+- Biodiversity/Education: 0.37–0.79
+- Best: ASIS (0.773), NorthernPlains (0.788)
