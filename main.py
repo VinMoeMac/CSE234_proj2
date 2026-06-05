@@ -244,16 +244,11 @@ def stage2_columns(
 ) -> list[str]:
     """Stage 2: given predicted table, ask model which columns are referenced."""
     col_list = "\n".join(f"  - {c}" for c in col_names)
-    # Add context about other tables in the query to help disambiguation
-    other_ctx = ""
-    if all_tables and len(all_tables) > 1:
-        others = [t for t in all_tables if t != table]
-        other_ctx = f"\nNote: this query also references table(s): {', '.join(others)}\n"
     prompt = (
         f"Question: {question}\n\n"
-        f"Table: {table}{other_ctx}\n"
+        f"Table: {table}\n"
         f"Columns:\n{col_list}\n\n"
-        f"Which columns from table {table} does the question reference? "
+        f"Which columns from this table does the question reference? "
         f"Output a JSON array of column names, or [] if none."
     )
     chat = [{"role": "system", "content": COLUMN_SYSTEM_PROMPT},
