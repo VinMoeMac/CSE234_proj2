@@ -1,0 +1,368 @@
+[
+  {
+    "db_id": "NTSB",
+    "question": "What is the maximum depth of crush for each crash event?",
+    "schema_links": {
+      "CDC": [
+        "CASEID",
+        "EVENTNO",
+        "CMAX"
+      ]
+    },
+    "question_id": 9600,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "Show the crush depth measurements coded as 888 or 999.",
+    "schema_links": {
+      "CDC": [
+        "CASEID",
+        "CMAX"
+      ]
+    },
+    "question_id": 9601,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "What is the highest vehicle-to-barrier collision crush depth?",
+    "schema_links": {
+      "CDC": [
+        "CASEID",
+        "CMAX",
+        "PDOF"
+      ]
+    },
+    "question_id": 9602,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "Show the principal direction of force for each crash event.",
+    "schema_links": {
+      "CDC": [
+        "CASEID",
+        "EVENTNO",
+        "PDOF"
+      ]
+    },
+    "question_id": 9603,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "How many crashes involved vehicles equipped with crash avoidance systems?",
+    "schema_links": {
+      "AVOID": [
+        "CASEID",
+        "EQUIP"
+      ]
+    },
+    "question_id": 9604,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "Which vehicles had pre-crash avoidance equipment that was available but not activated?",
+    "schema_links": {
+      "AVOID": [
+        "CASEID",
+        "VEHNO",
+        "EQUIP",
+        "AVAIL",
+        "ACTIVATE"
+      ]
+    },
+    "question_id": 9605,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "Show whether collision avoidance technology was available for each vehicle.",
+    "schema_links": {
+      "AVOID": [
+        "CASEID",
+        "EQUIP",
+        "AVAIL"
+      ]
+    },
+    "question_id": 9606,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "How many crashes involved vehicles with after-market adaptive driving equipment?",
+    "schema_links": {
+      "ADAPT": []
+    },
+    "question_id": 9607,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "Show the adaptive equipment type for each vehicle in the dataset.",
+    "schema_links": {
+      "ADAPT": [
+        "CASEID",
+        "VEHNO",
+        "ADAPT"
+      ]
+    },
+    "question_id": 9608,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "Which vehicles had adaptive equipment installed for disabled drivers?",
+    "schema_links": {
+      "ADAPT": [
+        "CASEID",
+        "VEHNO"
+      ]
+    },
+    "question_id": 9609,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "Display a count of crashes grouped by lighting condition at time of crash.",
+    "schema_links": {
+      "GV": [
+        "CASEID",
+        "LIGHTCOND"
+      ]
+    },
+    "question_id": 9610,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "How many crashes occurred in each weather condition?",
+    "schema_links": {
+      "GV": [
+        "CASEID",
+        "WEATHER"
+      ]
+    },
+    "question_id": 9611,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "How many different vehicles are there in this crash dataset?",
+    "schema_links": {
+      "GV": [
+        "CASEID",
+        "VEHNO"
+      ]
+    },
+    "question_id": 9612,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "Show the road surface condition and alignment for each crash.",
+    "schema_links": {
+      "GV": [
+        "CASEID",
+        "SURFCOND",
+        "ALIGNMENT"
+      ]
+    },
+    "question_id": 9613,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "How many events were recorded by event data recorders in these crashes?",
+    "schema_links": {
+      "EDREVENT": [
+        "CASEID",
+        "EDREVENTNO"
+      ]
+    },
+    "question_id": 9614,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "Show the event description and ignition cycle at time of crash from EDR data.",
+    "schema_links": {
+      "EDREVENT": [
+        "CASEID",
+        "EVENTDESC",
+        "IGCYCRASH"
+      ]
+    },
+    "question_id": 9615,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "What are the case IDs and event numbers for all EDR-recorded crash events?",
+    "schema_links": {
+      "EDREVENT": [
+        "CASEID",
+        "VEHNO",
+        "EDREVENTNO"
+      ]
+    },
+    "question_id": 9616,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "What vehicle make has the oldest average model year in the dataset?",
+    "schema_links": {
+      "VPICDECODE": [
+        "CASEID",
+        "Make",
+        "ModelYear"
+      ]
+    },
+    "question_id": 9617,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "Show the vehicle type and manufacturer name for each VIN-decoded vehicle.",
+    "schema_links": {
+      "VPICDECODE": [
+        "CASEID",
+        "VehicleType",
+        "ManufacturerFullName"
+      ]
+    },
+    "question_id": 9618,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "What model year are the vehicles in this crash study?",
+    "schema_links": {
+      "VPICDECODE": [
+        "CASEID",
+        "ModelYear"
+      ]
+    },
+    "question_id": 9619,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "What years does this crash investigation dataset span?",
+    "schema_links": {
+      "CRASH": [
+        "CRASHYEAR"
+      ]
+    },
+    "question_id": 9620,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "How many crashes occurred in each month of the year?",
+    "schema_links": {
+      "CRASH": [
+        "CASEID",
+        "CRASHMONTH"
+      ]
+    },
+    "question_id": 9621,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "Show the number of vehicles involved and day of week for each crash.",
+    "schema_links": {
+      "CRASH": [
+        "CASEID",
+        "VEHICLES",
+        "DAYOFWEEK"
+      ]
+    },
+    "question_id": 9622,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "How many injuries were caused by an unknown source of energy?",
+    "schema_links": {
+      "ICS": [
+        "CASEID",
+        "SOE"
+      ]
+    },
+    "question_id": 9623,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "Show the body region and source of energy for each coded injury.",
+    "schema_links": {
+      "ICS": [
+        "CASEID",
+        "BRI",
+        "SOE"
+      ]
+    },
+    "question_id": 9624,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "How many vehicle occupants did not wear a seatbelt even though one was available?",
+    "schema_links": {
+      "OCC": [
+        "CASEID",
+        "OCCNO",
+        "BELTUSE",
+        "BELTAVAIL"
+      ]
+    },
+    "question_id": 9625,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "Show the age and sex of each occupant involved in crashes.",
+    "schema_links": {
+      "OCC": [
+        "CASEID",
+        "OCCNO",
+        "AGE",
+        "SEX"
+      ]
+    },
+    "question_id": 9626,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "Show the first recommended front and rear tire sizes for each vehicle.",
+    "schema_links": {
+      "TIREPLAC": [
+        "CASEID",
+        "RECFRONT1",
+        "RECREAR1"
+      ]
+    },
+    "question_id": 9627,
+    "gold_sql": ""
+  },
+  {
+    "db_id": "NTSB",
+    "question": "What are the recommended tire sizes listed on the vehicle placard?",
+    "schema_links": {
+      "TIREPLAC": [
+        "CASEID",
+        "RECFRONT1",
+        "RECREAR1",
+        "RECFRPRESS1"
+      ]
+    },
+    "question_id": 9628,
+    "gold_sql": ""
+  }
+]

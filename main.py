@@ -12,7 +12,7 @@ from data_prep import load_schema, serialize_schema, format_prompt, SYSTEM_PROMP
 BASE_MODEL = "Qwen/Qwen2.5-1.5B-Instruct"
 ADAPTER_PATH = "./adapter"
 DEFAULT_SCHEMAS_DIR = "./Project2/schemas"
-MAX_NEW_TOKENS = 512
+MAX_NEW_TOKENS = 512  # stage1 generation budget
 BATCH_SIZE = 4
 
 COLUMN_SYSTEM_PROMPT = (
@@ -401,7 +401,11 @@ def main():
                     help="Two-stage inference: predict tables first, then refine columns per table (default: on)")
     ap.add_argument("--two_stage_topk", type=int, default=0,
                     help="Also run stage2 on top-k keyword tables not predicted in stage1")
+    ap.add_argument("--max_new_tokens", type=int, default=MAX_NEW_TOKENS,
+                    help="Max new tokens for stage1 generation (default: 512)")
     args = ap.parse_args()
+    global MAX_NEW_TOKENS
+    MAX_NEW_TOKENS = args.max_new_tokens
 
     with open(args.input, "r", encoding="utf-8") as f:
         questions = json.load(f)
