@@ -11,7 +11,7 @@ from data_prep import load_schema, serialize_schema, format_prompt, SYSTEM_PROMP
 
 BASE_MODEL = "Qwen/Qwen2.5-1.5B-Instruct"
 ADAPTER_PATH = "./adapter"
-DEFAULT_SCHEMAS_DIR = "./schemas"
+DEFAULT_SCHEMAS_DIR = "./Project2/schemas"
 MAX_NEW_TOKENS = 512
 BATCH_SIZE = 4
 
@@ -397,8 +397,8 @@ def main():
     ap.add_argument("--max_seq_len", type=int, default=3072)
     ap.add_argument("--filter_schema", action="store_true",
                     help="Only serialize tables matching question tokens (use on low VRAM)")
-    ap.add_argument("--two_stage", action="store_true",
-                    help="Two-stage inference: predict tables first, then refine columns per table")
+    ap.add_argument("--two_stage", action="store_true", default=True,
+                    help="Two-stage inference: predict tables first, then refine columns per table (default: on)")
     ap.add_argument("--two_stage_topk", type=int, default=0,
                     help="Also run stage2 on top-k keyword tables not predicted in stage1")
     args = ap.parse_args()
