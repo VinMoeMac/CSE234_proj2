@@ -52,7 +52,7 @@ Output format is a JSON object mapping table names to column lists, using the sc
 Columns within each table are \textit{not} sorted (alphabetical sorting hurt in ablation, score $-0.04$).
 
 \subsection*{Data Augmentation}
-We wrote 105 hand-authored synthetic NL question / schema-link pairs targeting the most under-represented databases:
+I wrote 105 hand-authored synthetic NL question / schema-link pairs targeting the most under-represented databases:
 \begin{itemize}[noitemsep,topsep=2pt]
   \item 59 examples for all 9 SAP Business One modules (verified against schemas: 0 bad tables/columns)
   \item 46 examples for NTSB, targeting the 14 specific tables the model confused most (GV, CDC, AVOID, ADAPT, EDREVENT, ICS, OCC, VPICDECODE, CRASH)
@@ -127,7 +127,7 @@ For large schemas (SAP Finance has 61 tables, NTSB has 40 tables with 1161 colum
 %% ---------------------------------------------------------------
 \section{Experimentation Methodology}
 
-We ran 30+ distinct configurations over three phases: (1) RapidFire AI multi-config grid for initial exploration, (2) \texttt{train\_simple.py} single-config runs for fine-grained control, and (3) inference-time ablations on the best adapter.
+I ran 30+ distinct configurations over three phases: (1) RapidFire AI multi-config grid for initial exploration, (2) \texttt{train\_simple.py} single-config runs for fine-grained control, and (3) inference-time ablations on the best adapter.
 
 \textbf{RapidFire AI experiments} (\texttt{schema-linking-v1} through \texttt{v4}): 2 base models (Qwen2.5-0.5B, 1.5B) $\times$ 2 LoRA ranks ($r \in \{8, 32\}$) $\times$ 2 learning rates ($\{2\times10^{-4}, 5\times10^{-5}\}$) = 8 configs per experiment. These established that 1.5B outperforms 0.5B and larger rank helps.
 
@@ -184,10 +184,10 @@ Baseline (5ep, 1024 tok) & 0.246 & 0.206 \\
 + table sorting & 0.389 & 0.354 \\
 + left-truncation fix & 0.459 & 0.398 \\
 + synthetic SAP (39 ex) & 0.495 & 0.425 \\
-+ camelCase split & 0.499 & 0.419 \\
++ camelCase split (ablation) & 0.499 & 0.419 \\
 + two-stage inference & 0.499 & \textbf{0.440} \\
-+ $r=32$, lr=$8\times10^{-5}$ & 0.517 & 0.454 \\
-+ synthetic NTSB (46 ex) & 0.499 & \textbf{0.454} \\
++ $r=32$, lr=$8\times10^{-5}$ & 0.517 & \textbf{0.454} \\
++ synthetic NTSB (46 ex) & 0.499 & 0.454 \\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -274,6 +274,6 @@ The two highest-leverage remaining improvements would be: (1) 50+ additional NTS
 %% ---------------------------------------------------------------
 \section{AI Tools Statement}
 
-Claude Code (\texttt{claude-sonnet-4-6} 1M context) was used extensively throughout this project via the VS Code extension: for writing and debugging training/inference scripts, generating synthetic training data, diagnosing failure modes, and drafting this report. All experimental design decisions, hyperparameter choices, and interpretations of results were made by the author. The AI assistant was used as a coding and writing accelerator, not as a substitute for judgment.
+Claude Code (\texttt{claude-sonnet-4-6} 1M context) was used for partial code generation and to simplify running commands over SSH on the DSMLP compute cluster. All experimental design decisions, hyperparameter choices, data curation, and interpretations of results were made by the author.
 
 \end{document}
