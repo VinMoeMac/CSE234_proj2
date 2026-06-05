@@ -190,8 +190,7 @@ def truncate_schema_text(schema_text: str, question: str, tokenizer, max_schema_
 
 
 def run_batch(model, tokenizer, prompts: list[str], max_seq_len: int = 3072) -> list[str]:
-    # Reserve tokens: system prompt (~300) + question (~150) + chat template (~100) + generation (~512)
-    max_schema_tokens = max_seq_len - 512 - 300 - 150 - 100
+    max_schema_tokens = max_seq_len - 512 - 200
 
     # Truncate schema portion of each prompt to protect system prompt and question
     truncated_prompts = []
