@@ -3,6 +3,48 @@ import os
 import re
 
 
+# Human-readable descriptions for cryptic table names
+# These help the model connect NL concepts to opaque abbreviations
+TABLE_DESCRIPTIONS = {
+    # NTSB crash investigation tables
+    "GV": "General Vehicle info: make, model, year, body type, lighting condition, road surface, weather, speed limit",
+    "CRASH": "Crash-level data: crash year, month, day of week, time, number of vehicles",
+    "OCC": "Occupant data: age, sex, seat location, belt use, injury severity, height, weight",
+    "AVOID": "Pre-crash avoidance maneuvers and collision avoidance equipment: availability, activation",
+    "ADAPT": "Adaptive equipment for disabled drivers installed in vehicle",
+    "CDC": "Crush Data Coding: crush depth, principal direction of force, delta-v speed",
+    "EDREVENT": "Event Data Recorder events: event number, description, ignition cycle",
+    "ICS": "Injury Coding Source: body region index, source of energy, confidence",
+    "VPICDECODE": "VIN decode: vehicle type, manufacturer, make, model, model year",
+    "EDRPRECRASH": "EDR pre-crash data: parameter codes, times, values before crash",
+    "TIREPLAC": "Tire placard: recommended front/rear tire sizes and pressures",
+    # SAP Business One tables
+    "OHEM": "Employee master record: name, salary, department, contact info",
+    "OHTY": "Employee type definitions: type ID, name, description",
+    "OHTM": "Team master: team ID, name, description",
+    "HTM1": "Team members: team ID, employee ID, role",
+    "HEM6": "Employee roles: employee ID, role ID",
+    "RDOC": "Report documents: document name, author, email settings, extension error action",
+    "OUQR": "User queries: query name, category, query string, last date",
+    "OQAG": "Query authorization groups: group ID, code, name",
+    "OCTR": "Service contracts: contract ID, customer, status, template",
+    "OSCL": "Service calls: call ID, subject, customer, status",
+    "OQUE": "Service queues: queue ID, description, manager",
+    "OJDT": "Journal entries: transaction ID, date, memo",
+    "OACT": "Chart of accounts: account code, name, balance",
+    "ORCR": "Recurring transactions: code, description, frequency",
+    "OPR1": "Sales opportunity details: opportunity ID, open/close dates, closing percentage, amounts",
+    "OOST": "Sales opportunity stages: stage number, description, closing percentage",
+    "ORCT": "Incoming payments: document number, date, cash amount",
+    "OVPM": "Outgoing payments: document number, vendor code, date, total",
+    "OCHO": "Checks: check key, account number, check date, amount",
+    "OCRD": "Business partners: card code, name, phone, email, balance, credit limit",
+    "OSLP": "Sales employees: code, name",
+    "OWHS": "Warehouses: code, name, location",
+    "OITM": "Items/products: item code, name, stock quantity, price",
+    "OWOR": "Production orders: document number, item code, planned quantity, status",
+}
+
 DB_ID_TO_FILENAME = {
     "SBODemoUS-Business Partners": "SBODemoUS-Business_Partners",
     "SBODemoUS-Human Resources": "SBODemoUS-Human_Resources",
@@ -186,9 +228,11 @@ def serialize_schema(
         cols = table_cols[table]
         if table not in allowed_tables:
             continue
-        # Approach 1: prepend table description hint
+        # Table description: use hardcoded TABLE_DESCRIPTIONS first, then derived keywords
         hint = ""
-        if table_descriptions and table in table_descriptions:
+        if table in TABLE_DESCRIPTIONS:
+            hint = f"  [{TABLE_DESCRIPTIONS[table]}]"
+        elif table_descriptions and table in table_descriptions:
             keywords = table_descriptions[table]
             if keywords:
                 hint = f"  [used for: {', '.join(keywords)}]"
