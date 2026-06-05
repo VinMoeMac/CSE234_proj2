@@ -24,12 +24,20 @@ COLUMN_SYSTEM_PROMPT = (
 
 
 def load_model(adapter_path: str):
+    # Read base model from adapter config (handles Qwen3, Qwen2.5, etc.)
+    adapter_cfg_path = os.path.join(adapter_path, "adapter_config.json")
+    if os.path.exists(adapter_cfg_path):
+        with open(adapter_cfg_path) as f:
+            base_model_name = json.load(f).get("base_model_name_or_path", BASE_MODEL)
+    else:
+        base_model_name = BASE_MODEL
+
     tokenizer = AutoTokenizer.from_pretrained(
-        BASE_MODEL, trust_remote_code=True, local_files_only=True)
+        base_model_name, trust_remote_code=True, local_files_only=True)
     tokenizer.padding_side = "left"
 
     base = AutoModelForCausalLM.from_pretrained(
-        BASE_MODEL,
+        base_model_name,
         dtype=torch.bfloat16,
         device_map="auto",
         trust_remote_code=True,
