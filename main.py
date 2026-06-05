@@ -404,8 +404,6 @@ def main():
     ap.add_argument("--max_new_tokens", type=int, default=MAX_NEW_TOKENS,
                     help="Max new tokens for stage1 generation (default: 512)")
     args = ap.parse_args()
-    global MAX_NEW_TOKENS
-    MAX_NEW_TOKENS = args.max_new_tokens
 
     with open(args.input, "r", encoding="utf-8") as f:
         questions = json.load(f)
@@ -414,8 +412,9 @@ def main():
     model, tokenizer = load_model(args.adapter_path)
 
     import time as _time
+    import main as _self; _self.MAX_NEW_TOKENS = args.max_new_tokens
     _t0 = _time.time()
-    print(f"Running inference on {len(questions)} questions...")
+    print(f"Running inference on {len(questions)} questions (max_new_tokens={args.max_new_tokens})...")
     preds = predict_all(
         questions,
         args.schemas_dir,
